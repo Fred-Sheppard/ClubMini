@@ -1,0 +1,21 @@
+header{
+    color: white;
+    font-size: 25px;
+    text-align: right;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background-size: 120px;
+    word-spacing: 20px;
+    padding-right: 10px;
+    background: cornflowerblue scroll;
+
+}
+footer{
+    padding: 40px 0;
+    color: white;
+    background: cornflowerblue;
+    height: auto;
+}
+
+h1 {
+    color: yellow;
+}
