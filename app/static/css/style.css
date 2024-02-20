@@ -1,21 +1,71 @@
-header{
-    color: white;
-    font-size: 25px;
-    text-align: right;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    background-size: 120px;
-    word-spacing: 20px;
-    padding-right: 10px;
-    background: cornflowerblue scroll;
+header {
+  color: white;
+  height: 60px;
+  font-size: 35px;
+  text-align: right;
+  font-family: Overpass, Geneva, Tahoma, sans-serif;
+  background-size: 120px;
+  word-spacing: 20px;
+  padding-right: 10px;
+  background: cornflowerblue scroll;
+}
+.background-image{
+  width: 100%;
+    height: 100%;
+    background-image: url('https://hea.ie/assets/uploads/2017/04/UL-1000x500.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
 
 }
-footer{
-    padding: 40px 0;
-    color: white;
-    background: cornflowerblue;
-    height: auto;
+#title-box{
+
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 20px;
+    border-radius: 10px;
+    color: #000;
 }
 
-h1 {
-    color: yellow;
+h1{
+  font-size: 50px;
+  text-align:center;
+  font-family: impact;
+
+}
+h2{
+  font-size: 120px;
+  text-align:center;
+  font-family: impact;
+
+
+}
+#Login-button{
+  background-color: red;
+  height:80px;
+  width:250px;
+   margin: 0 auto;
+  text-align:center;
+  margin-top:20px;
+  margin-bottom:30px;
+ line-height:80px;
+
+  font-size:35px;
+  border-radius:11px;
+  color:white;
+}
+footer {
+  padding: 40px 0;
+  color: white;
+  background: cornflowerblue;
+  height:90px;
+
+}
+p{
+  font-size:20px
+
+}
+a{
+  font-family:Helvetica;
+}
+#Login-button:hover{
+    box-shadow: 0 0 2px 3px white;
 }
