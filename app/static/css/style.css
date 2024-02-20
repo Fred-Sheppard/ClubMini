@@ -1,13 +1,33 @@
 header {
-  color: white;
-  height: 60px;
+  color: White;
+  height: 90px;
   font-size: 35px;
   text-align: right;
   font-family: Overpass, Geneva, Tahoma, sans-serif;
   background-size: 120px;
   word-spacing: 20px;
   padding-right: 10px;
-  background: cornflowerblue scroll;
+  background: #102cde scroll;
+    margin-top: 0;
+
+
+}
+#header-option{
+    margin: 10px;
+    height:55px;
+    width:140px;
+    float: left;
+    text-align: center;
+
+}
+#header-option:hover {
+    /*color: white;*/
+    background: #156bfd;
+     box-shadow: 0 0 2px 3px white;
+}
+
+.background-colour{
+    background: #edece8;
 }
 .background-image{
   width: 100%;
@@ -29,13 +49,14 @@ h1{
   font-size: 50px;
   text-align:center;
   font-family: impact;
+    color: #2056d9;
 
 }
 h2{
   font-size: 120px;
   text-align:center;
   font-family: impact;
-
+    color: black;
 
 }
 #Login-button{
@@ -65,7 +86,8 @@ p{
 }
 a{
   font-family:Helvetica;
+    color: white;
 }
 #Login-button:hover{
-    box-shadow: 0 0 2px 3px white;
+    box-shadow: 0 0 2px 3px yellow;
 }

@@ -1,8 +1,8 @@
-
+{% extends 'base.html'%}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
+{#<link rel="stylesheet" href="{% static 'css/style.css' %}">#}
 <head>
     <meta charset="UTF-8">
     <title>ClubHub</title>
@@ -13,6 +13,7 @@
     <a href="./login">Login</a>
 </header>
 <body>
+{% block content %}
 <div class="background-image">
     <div id="title-box">
         <h1>Welcome to </h1>
@@ -21,6 +22,7 @@
     <div id="Login-button"><a href="./login">Login/ Sign Up </a>
     </div>
 </div>
+{% endblock %}
 </body>
 <footer>
     <p>Find out more</p>
