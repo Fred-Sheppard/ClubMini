@@ -12,6 +12,9 @@ header {
 
 
 }
+#nav-bar{
+    float: right;
+}
 #header-option{
     margin: 10px;
     height:55px;
