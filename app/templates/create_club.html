@@ -1,0 +1,40 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Create Club</title>
+        <link rel="stylesheet" type="text/css" href="{% static 'app/css/styles.css' %}">
+    </head>
+<body>
+    <h1> Enter Club Details</h1>
+    <form>
+        <label for="userInput">Name:</label>
+        <input type="text" id="userInput" name="userInput">
+        <input type="submit" value="Submit">
+
+        <label for="userInput">Description:</label>
+        <input type="text" id="userInput" name="userInput">
+        <input type="submit" value="Submit">
+
+        <label for="takingApplications">Taking Applications:</label>
+        <input type="checkbox" id="takingApplications" name="takingApplications">
+        <input type="submit" value="Submit">        
+
+        <label for="userInput">Upload image URL:</label>
+        <input type="text" id="userInput" name="userInput">
+        <input type="submit" value="Submit">
+        </form>
+        <br>
+        <br>
+        <br>
+        <form method="POST">
+            {{ form.as_p }}
+            {% csrf_token %}
+            <button type="submit">Save</button>
+        </form>
+</body>
+</html>
+{% endblock %}

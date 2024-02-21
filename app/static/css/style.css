@@ -94,3 +94,15 @@ a{
 #Login-button:hover{
     box-shadow: 0 0 2px 3px yellow;
 }
+
+.big-button {
+  font-size: 24px;
+  padding: 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 80%; /* Adjust the width as needed */
+  margin: 230px;
+}
