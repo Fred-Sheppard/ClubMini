@@ -16,3 +16,6 @@ def login(request):
 
 def discover(request):
     return render(request, "discover.html")
+def student_dashboard(request):
+    return render(request, "student_dashboard.html")
+
