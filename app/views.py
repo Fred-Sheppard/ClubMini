@@ -26,3 +26,6 @@ def promt_club(request):
 
 def create_club(request):
     return render(request, "create_club.html")
+def student_dashboard(request):
+    return render(request, "student_dashboard.html")
+
