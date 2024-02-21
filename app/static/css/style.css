@@ -90,8 +90,8 @@ footer {
 
 }
 p{
-  font-size:20px
-    color:white;
+  font-size:20px;
+    color: white;
 
 }
 a{
@@ -135,4 +135,9 @@ a{
   cursor: pointer;
   width: 80%; /* Adjust the width as needed */
   margin: 230px;
+}
+
+form label{
+    font-size: 20px;
+    color: white;
 }

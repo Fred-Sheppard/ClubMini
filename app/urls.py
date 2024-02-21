@@ -11,5 +11,6 @@ urlpatterns = [
     path("create_event/", views.create_event, name='create_event'),
     path("promt_club/", views.promt_club, name='promt_club'),
     path("create_club/", views.create_club, name='create_club'),
-    path("student_dashboard/", views.student_dashboard, name='student_dashboard')
+    path("student_dashboard/", views.student_dashboard, name='student_dashboard'),
+    path("requests/", views.requests, name='requests')
 ]

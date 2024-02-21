@@ -29,3 +29,6 @@ def create_club(request):
 def student_dashboard(request):
     return render(request, "student_dashboard.html")
 
+def requests(request):
+    return render(request, "requests.html")
+
