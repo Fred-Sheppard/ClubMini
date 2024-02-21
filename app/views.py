@@ -16,3 +16,9 @@ def login(request):
 
 def discover(request):
     return render(request, "discover.html")
+
+def sign_up(request):
+    return render(request, "sign_up.html")
+
+def profile(request):
+    return render(request, "profile.html")

@@ -1,0 +1,148 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");
+
+*{
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	font-family: "Poppins", sans-serif;
+	text-decoration: none;
+	font-weight: bold;
+	color: #363636;
+}
+
+::-webkit-scrollbar{
+	display: none;
+}
+
+::selection{
+	background: 0;
+}
+
+body {
+	width: 100%;
+	min-height: 460px;
+	height: 100vh;
+	overflow: scroll;
+	background: url("https://i.pinimg.com/564x/0e/58/17/0e5817b2f5a8e955103255569de24896.jpg")
+		no-repeat center center;
+	background-size: cover;
+	backdrop-filter: blur(7px);
+	display: grid;
+	place-content: center;
+}
+
+.container {
+	width: 100%;
+	min-height:420px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 630px;
+	height: 76vh;
+}
+
+.banner {
+	max-height:420px;
+	height: 100%;
+	width: 350px;
+	background: rgb(0, 0, 0, 0.4);
+	border-radius: 10px 0 0 10px;
+	transition: .4s;
+}
+
+.banner * {
+	margin: 40px;
+	color: #ccc;
+	cursor: default;
+}
+
+.form {
+	max-height:420px;
+	height: 100%;
+	width: 280px;
+	background: #fff;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	border-radius: 0 10px 10px 0;
+	position: relative;
+}
+
+img {
+	pointer-events: none;
+	margin: 45px 0 20px;
+	height: 70px;
+	border-radius: 50%;
+	box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.form small:first-of-type{
+	margin-bottom: 20px;
+}
+
+a {
+	font-size: small;
+	color: #1663be;
+	cursor: pointer;
+}
+
+input {
+	margin-bottom: 10px;
+	padding: 8px 15px;
+	width: 212px;
+	border: 2px solid #ccc;
+	color: #000;
+	font-weight: bold;
+	border-radius: 8px;
+}
+
+input:focus {
+	outline: 0;
+	transition: 0.5s;
+	border: 2px solid #646464;
+}
+
+/* ::-ms-reveal {
+	filter: invert(100%);
+} */
+
+button {
+	min-width: 215px;
+	min-height: 38px;
+	border: 2px solid #142b54;
+	background: #142b54;
+	color: #fff;
+	cursor: pointer;
+	border-radius: 8px;
+	box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+	margin: 0 0 50px 0;
+}
+
+button:active {
+	transform: scale(1.05);
+	box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+}
+
+#forgot{
+	opacity: .6;
+}
+
+#forgot:hover{
+	opacity: 1;
+}
+
+@media (max-width: 720px) {
+	.banner {
+		position: absolute;
+		transform: translatex(10%);
+		opacity: 0;
+	}
+	.content {
+		display: flex;
+		justify-content: center;
+	}
+	
+	.form {
+		border-radius: 10px;
+	}
+}

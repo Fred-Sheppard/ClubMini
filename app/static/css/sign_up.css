@@ -1,0 +1,78 @@
+
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.wrapper {
+  height: 100%;
+  background-image: url("https://i.pinimg.com/564x/0e/58/17/0e5817b2f5a8e955103255569de24896.jpg");
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form {
+  margin: 40px auto;
+  padding: 10px 30px 35px;
+  display: block;
+  width: 375px;
+  background-color: rgba(56, 56, 56, 0.5); 
+  box-shadow: 0 0 10px 0 #000;
+  text-align: center;
+}
+
+.form-title {
+  font-family: "Poppins", sans-serif;
+  font-size: 40px;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.input-std,
+.input-half {
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  font-size: 22px;
+  height: 50px;
+  padding: 4px 6px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+.input-half {
+  width: calc(50% - 5px);
+  float: left;
+  margin-right: 10px;
+}
+
+.btn-submit {
+  width: 100%;
+  font-size: 1.8em;
+  padding: 11px 19px;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: #47CF73;
+  border: none;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+.btn-submit:focus {
+  outline: none;
+}
+
+.login-message {
+  color: #3b7bca;
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+.login-message a {
+  color: #fff; 
+}
