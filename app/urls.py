@@ -1,4 +1,3 @@
-from django.views.static import serve
 from django.urls import path
 
 from . import views

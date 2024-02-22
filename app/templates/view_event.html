@@ -1,49 +1,19 @@
-{%extends 'base.html'%}
+{% extends 'base.html' %}
 {% block content %}
-<div class="container">
-  <div class="event-details">
-    <h3>Event Details</h3>
-    <p>**Date:** 2024-02-23 (Placeholder)</p>
-    <p>**Event Name:** PL Meet (Placeholder)</p>
-    <p>**Description:** jhjgvyuiswhejdfnjsef(Placeholder)</p>
-    <p>**Club:** [sports complex gym] (Placeholder)</p>
-    <p>**Attending:** 24 (Placeholder)</p>
-  </div>
-  <div class="requests">
-    <h3>Requests</h3>
-    <ul>
-      </ul>
-  </div>
-</div>
+    <div class="container">
+        <div class="event-details">
+            <h3>Event Details</h3>
+            <p>**Date:** 2024-02-23 (Placeholder)</p>
+            <p>**Event Name:** PL Meet (Placeholder)</p>
+            <p>**Description:** jhjgvyuiswhejdfnjsef(Placeholder)</p>
+            <p>**Club:** [sports complex gym] (Placeholder)</p>
+            <p>**Attending:** 24 (Placeholder)</p>
+        </div>
+        <div class="requests">
+            <h3>Requests</h3>
+            <ul>
+            </ul>
+        </div>
+    </div>
 
-{% comment %} <script> {% endcomment %}
-    {% comment %} const studentRequests = [
-      { name: "John Doe", status: "pending" },
-      { name: "Jane Smith", status: "approved" },
-    ];
-  
-    const requestsList = document.querySelector(".requests ul");
-  
-    studentRequests.forEach((request) => {
-      const listItem = document.createElement("li");
-      listItem.innerHTML = `
-        <span>${request.name}</span>
-        <button data-action="approve">Approve</button>
-        <button data-action="deny">Deny</button>
-      `;
-  
-      listItem.querySelector(`button[data-action="approve"]`).addEventListener("click", () => {
-        request.status = "approved";
-        listItem.querySelector("span").style.color = "green";
-        listItem.querySelector(`button[data-action="approve"]`).disabled = true;
-      });
-  
-      listItem.querySelector(`button[data-action="deny"]`).addEventListener("click", () => {
-        request.status = "denied";
-        requestsList.removeChild(listItem);
-      });
-  
-      requestsList.appendChild(listItem);
-    });
-  </script> {% endcomment %}
 {% endblock %}
