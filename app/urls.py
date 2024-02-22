@@ -12,5 +12,7 @@ urlpatterns = [
     path("promt_club/", views.promt_club, name='promt_club'),
     path("create_club/", views.create_club, name='create_club'),
     path("student_dashboard/", views.student_dashboard, name='student_dashboard'),
-    path("requests/", views.requests, name='requests')
+    path("requests/", views.requests, name='requests'),
+    path("signup_request/", views.signup_request, name='signup_request'),
+    path("view_event/", views.view_event, name='view_event')
 ]

@@ -32,3 +32,8 @@ def student_dashboard(request):
 def requests(request):
     return render(request, "requests.html")
 
+def signup_request(request):
+    return render(request, "signup_request.html")
+
+def view_event(request):
+    return render(request, "view_event.html")

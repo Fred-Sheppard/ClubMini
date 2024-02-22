@@ -13,19 +13,16 @@
     <form>
         <label for="userInput">Title:</label>
         <input type="text" id="userInput" name="userInput">
-        <input type="submit" value="Submit">
-
+        <br>
         <label for="userInput">Description:</label>
         <input type="text" id="userInput" name="userInput">
-        <input type="submit" value="Submit">
-
+        <br>
         <label for="userInput">Date:</label>
         <input type="text" id="userInput" name="userInput">
-        <input type="submit" value="Submit">
-
+        <br>
         <label for="userInput">Venue:</label>
         <input type="text" id="userInput" name="userInput">
-        <input type="submit" value="Submit">
+
         </form>
         <br>
         <br>
@@ -33,7 +30,7 @@
         <form method="POST">
             {{ form.as_p }}
             {% csrf_token %}
-            <button type="submit">Save</button>
+            <button type="submit">Create Event</button>
         </form>
 </body>
 </html>

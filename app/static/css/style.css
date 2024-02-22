@@ -65,6 +65,7 @@ h2{
 h3{
     font-size:65px;
     text-align: left;
+    color: #ffffff;
 
 }
 #Login-button{
@@ -140,4 +141,37 @@ a{
 form label{
     font-size: 20px;
     color: white;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.event-details {
+  grid-column: 1;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.requests {
+  float: right;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.requests ul {
+  list-style: none;
+  padding: 0;
+}
+
+.requests li {
+  margin-bottom: 10px;
+}
+
+.requests li span {
+  color: white;
 }
