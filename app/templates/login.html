@@ -1,4 +1,4 @@
-{% extends 'base.html'%}
+{% extends 'base.html' %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -8,8 +8,12 @@
 </head>
 <body>
 {% block content %}
-
-<h1>Login</h1>
+    <h1>Login</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Login</button>
+    </form>
 {% endblock %}
 </body>
 </html>
