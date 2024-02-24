@@ -68,6 +68,8 @@ h3{
     color: #ffffff;
 
 }
+
+/*Buttons{      */
 #Login-button{
   background-color: red;
   height:80px;
@@ -82,6 +84,47 @@ h3{
   border-radius:11px;
   color:white;
 }
+
+#Login-button:hover{
+    box-shadow: 0 0 2px 3px yellow;
+}
+
+
+.big-button {
+  font-size: 24px;
+  padding: 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 80%; /* Adjust the width as needed */
+  margin: 230px;
+}
+
+.edit-name{
+    border: 1px solid black;
+    height: 30px;
+    width: 120px;
+    background: rgb(248, 248, 248);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+}
+
+.create-event{
+    background: #790f0f;
+    height: 80px;
+    width:320px;
+    text-align: center;
+    margin: 80px;
+
+    font-size: 40px;
+    color: white;
+}
+/*  }           */
 footer {
   padding: 40px 0;
   color: white;
@@ -99,9 +142,7 @@ a{
   font-family:Helvetica;
     color: white;
 }
-#Login-button:hover{
-    box-shadow: 0 0 2px 3px yellow;
-}
+
 #your-clubs{
     padding: 5px;
     height: fit-content;
@@ -126,20 +167,9 @@ a{
 }
 #blank{
     height: 200px;
-
     background: #212121;
 }
-.big-button {
-  font-size: 24px;
-  padding: 20px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  width: 80%; /* Adjust the width as needed */
-  margin: 230px;
-}
+
 
 form label{
     font-size: 20px;
@@ -177,4 +207,25 @@ form label{
 
 .requests li span {
   color: white;
+}
+#club-name-box{
+    background: #790f0f;
+    padding: 5px;
+    height: 100px;
+    width: fit-content(110%);
+    float: left;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#upcoming-events2{
+    margin: 100px;
+     height: fit-content;
+    float: left;
+
+    background: #790f0f;
+    color: white;
+}
+#members-control{
+    color: white;
 }
