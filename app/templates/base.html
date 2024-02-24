@@ -5,24 +5,25 @@
 <head>
     <meta charset="UTF-8">
     <title>ClubHub</title>
+    <link rel="icon" type="image/x-icon" href={% static 'favicon.ico' %}>
 </head>
 <header>
     <div id="nav-bar">
-    <div id="header-option"><a href="{% url 'index' %}">Home</a></div>
-    <div id="header-option"><a href="{% url 'discover' %}">Discover</a></div>
-    <div id="header-option"><a href="{% url 'login' %}">Login</a></div>
-</div>
+        <div id="header-option"><a href="{% url 'index' %}">Home</a></div>
+        <div id="header-option"><a href="{% url 'discover' %}">Discover</a></div>
+        <div id="header-option"><a href="{% url 'login' %}">Login</a></div>
+    </div>
 </header>
 <body class="background-colour">
 <div class="background-colour">
-{% block content %}
+    {% block content %}
 
 
 
-{% endblock %}
+    {% endblock %}
 </div>
 </body>
 <footer>
-    <p>Find out more:  23383372@studentmail.ul.ie</p>
+    <p>Find out more: 23383372@studentmail.ul.ie</p>
 </footer>
 </html>
