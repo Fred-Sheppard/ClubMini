@@ -11,30 +11,9 @@ def index(request):
     return render(request, "index.html")
 
 
-def login_view(request):
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                if user.role is not None:
-                    # admin_dashboard, student_dashboard etc
-                    dashboard = str(user.role).lower() + '_dashboard'
-                else:
-                    dashboard = ''
-                return redirect(dashboard)
-            else:
-                pass
-    else:
-        form = LoginForm()
-    return render(request, 'login.html', {'form': form})
-
-
 def discover(request):
-    return render(request, "discover.html")
+    clubs = Clubs.objects.all()
+    return render(request, "discover.html", {'clubs': clubs})
 
 
 def create_event(request):
@@ -61,20 +40,35 @@ def view_event(request):
     return render(request, "view_event.html")
 
 
-# @login_required
-def student_dashboard(request):
-    # if request.user.role_id != Roles.objects.get(name='Student').role_id:
-    #     raise PermissionError(f"You don't have permission to access this view\nYour role: {request.user.role}")
+def login_view(request):
+    if request.method != 'POST':
+        form = LoginForm()
+    else:
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(request, username=username, password=password)
+            if user is None:
+                pass
+            login(request, user)
+            if user.role is not None:
+                # admin_dashboard, student_dashboard etc
+                dashboard = str(user.role).lower() + '_dashboard'
+            else:
+                dashboard = ''
+            return redirect(dashboard)
+    return render(request, 'login.html', {'form': form})
 
+
+@login_required
+def student_dashboard(request):
     if request.user.role != Roles.objects.get(name='Student'):
         raise PermissionError(f"You don't have permission to access this view\nYour role: {request.user.role}")
 
     today = timezone.now()
     clubs = Users.objects.get(name=request.user.name).members.all()
-    events = []
-    for club in clubs:
-        events += Events.objects.filter(club=club).filter(event_time__gt=today).order_by('event_time')
-    events = events[:3]
+    events = Events.objects.filter(club__in=clubs).filter(event_time__gt=today).order_by('event_time')[:3]
     return render(request, 'student_dashboard.html', {'events': events, 'clubs': clubs})
 
 

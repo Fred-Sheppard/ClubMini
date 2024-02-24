@@ -1,5 +1,23 @@
-{%extends 'base.html'%}
-{%block content%}
-<h1> Discover </h1>
-{%endblock%}
-```
+{% extends 'base.html' %}
+{% block content %}
+    <h1> Discover </h1>
+    <ul>
+        {% for club in clubs %}
+            <li>
+                {{ club.name }}
+                <ul>
+                    <li>{{ club.description }}</li>
+                    <li>{{ club.members.count }} members</li>
+                    <li>
+                        {% if club.accepting_members %}
+                            Accepting members!
+                        {% else %}
+                            Currently closed to new members
+                        {% endif %}
+                    </li>
+
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
