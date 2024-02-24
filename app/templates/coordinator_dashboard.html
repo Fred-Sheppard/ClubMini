@@ -1,34 +1,41 @@
-{% extends 'base.html'%}
+{% extends 'base.html' %}
 {% block content %}
-<div id="club-name-box">
-<h1>*Club Name Here*</h1>
-
-    <div id="edit-club-name">
-    <button type="button dit-name">Edit Name</button>
+    <div id="club-name-box">
+        <h1>{{ club }}</h1>
+        <div id="edit-club-name">
+            <button type="button dit-name">Edit Name</button>
+        </div>
     </div>
-</div>
     <div id="event-control">
-    <button type="button create-event">Create Event</button>
-    <div id="upcoming-events">
-        <h2>Events</h2>
-        <ul>
-            <li>Event no 1 shown here</li>
-             <li>Event no 2 shown here</li>
-             <li>Event no 3 shown here</li>
-        </ul>
-    </div>
-    <button type="button view-all-events">View All</button>
+        <button type="button create-event">Create Event</button>
+        <div id="upcoming-events">
+            <h2>Events</h2>
+            <ul>
+                {% for event in events %}
+                    <li>
+                        {{ event.title }} - {{ event.event_time }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <button type="button view-all-events">View All</button>
     </div>
     <div id="members-control">
-    <div id="requests">
-        <h2>Requests</h2>
-        <ul>
-            <li>User request 1 here</li>
-            <li>User request 2 here</li>
-            <li>User request 3 here</li>
-        </ul>
-        <button type="button view-all-requests">View all</button>
-    </div>
+        <div id="requests">
+            <h2>Requests</h2>
+            <ul>
+                {% for club_request in club_requests %}
+                    <li>
+                        {{ club_request.user.name }}
+                        <ul>
+                            <li>{{ club_request.user.email }}</li>
+                            <li>{{ club_request.date_updated }}</li>
+                        </ul>
+                    </li>
+                {% endfor %}
+            </ul>
+            <button type="button view-all-requests">View all</button>
+        </div>
         <div id="members">
             <h2>Members</h2>
             <ul>
