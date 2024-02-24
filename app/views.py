@@ -1,7 +1,10 @@
-from django.shortcuts import render
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
 from django.utils import timezone
 
-from .models import Events, Clubs  # Import your Event model
+from .forms import LoginForm
+from .models import Events, Users
 
 
 def index(request):
@@ -12,8 +15,21 @@ def test(request):
     return render(request, "test.html")
 
 
-def login(request):
-    return render(request, "login.html")
+def login_view(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('student_dashboard')  # Redirect to your home page
+            else:
+                print(form.errors)
+    else:
+        form = LoginForm()
+    return render(request, 'login.html', {'form': form})
 
 
 def discover(request):
@@ -44,8 +60,15 @@ def view_event(request):
     return render(request, "view_event.html")
 
 
+@login_required
 def student_dashboard(request):
+    if request.user.role_id != 2:
+        raise PermissionError(f"You don't have permission to access this view\nYour role: {request.user.role}")
+
     today = timezone.now()
-    events = Events.objects.filter(event_time__gt=today).order_by('event_time')[:3]
-    clubs = Clubs.objects.all()[:3]
+    clubs = Users.objects.get(name=request.user.name).members.all()
+    events = []
+    for club in clubs:
+        events += Events.objects.filter(club=club).filter(event_time__gt=today).order_by('event_time')
+    events = events[:3]
     return render(request, 'student_dashboard.html', {'events': events, 'clubs': clubs})

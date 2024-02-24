@@ -1,12 +1,19 @@
+insert into auth_group (name)
+values ('Coordinator'),
+       ('Student');
+
 -- -- INSERT statements with at least 3 samples
 INSERT INTO app_roles (name)
 VALUES ('Coordinator'),
        ('Student');
 
-INSERT INTO app_users (role_id, name, email, password)
-VALUES (1, 'John Doe', 'john.doe@example.com', 'hashed_password'),
-       (2, 'Jane Smith', 'jane.smith@example.com', 'hashed_password'),
-       (1, 'Mary Jones', 'mary.jones@example.com', 'hashed_password');
+INSERT INTO app_users (role_id, name, email, password, group_id)
+VALUES (1, 'John Doe', 'john.doe@example.com',
+        'pbkdf2_sha256$720000$D6bRqUkBTWMkIc4kMD7jmT$BtAI4S+jmOhlsFR+ADbbZS3ul1Rq5tqRLPURV5VuIJc=', 1),
+       (2, 'Jane Smith', 'jane.smith@example.com',
+        'pbkdf2_sha256$720000$D6bRqUkBTWMkIc4kMD7jmT$BtAI4S+jmOhlsFR+ADbbZS3ul1Rq5tqRLPURV5VuIJc=', 1),
+       (1, 'Mary Jones', 'mary.jones@example.com',
+        'pbkdf2_sha256$720000$D6bRqUkBTWMkIc4kMD7jmT$BtAI4S+jmOhlsFR+ADbbZS3ul1Rq5tqRLPURV5VuIJc=', 2);
 
 INSERT INTO app_accountrequests (email, role_id)
 VALUES ('new_coordinator@example.com', 1),
@@ -18,7 +25,7 @@ VALUES (1, 'Coding Club', 'Learn and share your coding skills', TRUE),
        (2, 'Photography Club', 'Capture the world through your lens', FALSE),
        (3, 'Book Club', 'Discuss and analyze your favorite books', TRUE);
 
-INSERT INTO app_clubmembers (user_id, club_id)
+INSERT INTO app_clubs_members (users_id, clubs_id)
 VALUES (2, 1),
        (3, 2),
        (1, 3);
