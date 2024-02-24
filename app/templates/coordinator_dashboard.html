@@ -38,9 +38,16 @@
         <div id="members">
             <h2>Members</h2>
             <ul>
-                <li>Member 1 shown here</li>
-                <li>Member 2 shown here</li>
-                <li>Member 3 shown here</li>
+                {% for member in members %}
+                    <li>
+                        {{ member.name }}
+                        <ul>
+                            <li>
+                                {{ member.email }}
+                            </li>
+                        </ul>
+                    </li>
+                {% endfor %}
             </ul>
 
         </div>

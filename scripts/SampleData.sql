@@ -1,5 +1,6 @@
 insert into auth_group (name)
-values ('Coordinator'),
+values ('Admin'),
+       ('Coordinator'),
        ('Student');
 
 -- -- INSERT statements with at least 3 samples

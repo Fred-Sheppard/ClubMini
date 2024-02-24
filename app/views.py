@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.utils import timezone
 
 from .forms import LoginForm
-from .models import Events, Users, Clubs, ClubRequests
+from .models import Events, Users, Clubs, ClubRequests, Roles
 
 
 def index(request):
@@ -20,9 +20,14 @@ def login_view(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('student_dashboard')  # Redirect to your home page
+                if user.role is not None:
+                    # admin_dashboard, student_dashboard etc
+                    dashboard = str(user.role).lower() + '_dashboard'
+                else:
+                    dashboard = ''
+                return redirect(dashboard)
             else:
-                print(form.errors)
+                pass
     else:
         form = LoginForm()
     return render(request, 'login.html', {'form': form})
@@ -56,9 +61,12 @@ def view_event(request):
     return render(request, "view_event.html")
 
 
-@login_required
+# @login_required
 def student_dashboard(request):
-    if request.user.role_id != 2:
+    # if request.user.role_id != Roles.objects.get(name='Student').role_id:
+    #     raise PermissionError(f"You don't have permission to access this view\nYour role: {request.user.role}")
+
+    if request.user.role != Roles.objects.get(name='Student'):
         raise PermissionError(f"You don't have permission to access this view\nYour role: {request.user.role}")
 
     today = timezone.now()
@@ -70,10 +78,14 @@ def student_dashboard(request):
     return render(request, 'student_dashboard.html', {'events': events, 'clubs': clubs})
 
 
-def coordinator_dashbaord(request):
+@login_required
+def coordinator_dashboard(request):
+    if request.user.role != Roles.objects.get(name='Coordinator'):
+        raise PermissionError(f"You don't have permission to access this view\nYour role: {request.user.role}")
+
     club = Clubs.objects.filter(club_id=request.user.user_id)[0]
     events = Events.objects.filter(club__name=club.__str__())
     club_requests = ClubRequests.objects.filter(club__name=club.__str__())
-    print(club_requests)
+    members = club.members.all()
     return render(request, 'coordinator_dashboard.html',
-                  {'club': club, 'events': events, 'club_requests': club_requests})
+                  {'club': club, 'events': events, 'club_requests': club_requests, 'members': members})
