@@ -103,9 +103,9 @@ a{
     box-shadow: 0 0 2px 3px yellow;
 }
 #your-clubs{
-    float: left;
+    padding: 5px;
     height: fit-content;
-    width:50%;
+
     background: #790f0f;
     color: white;
 }
@@ -114,18 +114,21 @@ a{
 
 }
 #upcoming-events{
-    float: right;
+    padding: 5px;
      height: fit-content;
-    width:50%;
+
     background: #790f0f;
     color: white;
 }
 #dashboard-layout{
-    display: flex;
-    gap: 5%;
-    line-height:20px;
+     display: grid;
+  grid-template-columns: repeat(2, 1fr);
 }
+#blank{
+    height: 200px;
 
+    background: #212121;
+}
 .big-button {
   font-size: 24px;
   padding: 20px;
