@@ -62,7 +62,7 @@ class Clubs(models.Model):
     name = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
     accepting_members = models.BooleanField()
-    image = models.BinaryField(blank=True, null=True)
+    image = models.TextField(null=True)
     date_inserted = models.DateTimeField(auto_now_add=True, null=True)
     date_updated = models.DateTimeField(auto_now=True, null=True)
     members = models.ManyToManyField(Users, related_name='members')
