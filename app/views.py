@@ -1,57 +1,11 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.utils import timezone
 
 from .forms import LoginForm
 from .models import AccountRequests, Events, Users, Clubs, ClubRequests, Roles
-
-
-def index(request):
-    return render(request, "index.html")
-
-
-def discover(request):
-    clubs = Clubs.objects.all()
-    return render(request, "discover.html", {'clubs': clubs})
-
-
-def create_event(request):
-    return render(request, "create_event.html")
-
-
-def prompt_club(request):
-    return render(request, "prompt_club.html")
-
-
-def create_club(request):
-    return render(request, "create_club.html")
-
-
-def admin_dashboard(request):
-    accountrequests = AccountRequests.objects.all().order_by('-a_request_id')
-    return render(request, 'admin_dashboard.html', {'accountrequests': accountrequests})
-
-
-def approve_request(request, request_id):
-    account_request = AccountRequests.objects.get(pk=request_id)
-    approved_user = Users.objects.create(email=account_request.email, role_id=account_request.role_id)
-    account_request.delete()
-    return redirect('request_list')
-
-
-def reject_request(request, request_id):
-    account_request = AccountRequests.objects.get(pk=request_id)
-    account_request.delete()
-    return redirect('request_list')
-
-
-def signup_request(request):
-    return render(request, "signup_request.html")
-
-
-def view_event(request):
-    return render(request, "view_event.html")
 
 
 def login_view(request):
@@ -74,6 +28,10 @@ def login_view(request):
             dashboard = str(role).lower() + '_dashboard'
         else:
             dashboard = ''
+
+        next_url = request.GET.get('next')
+        if next_url is not None:
+            return HttpResponseRedirect(next_url)
         return redirect(dashboard)
 
 
@@ -99,3 +57,66 @@ def coordinator_dashboard(request):
     members = club.members.all()
     return render(request, 'coordinator_dashboard.html',
                   {'club': club, 'events': events, 'club_requests': club_requests, 'members': members})
+
+
+@login_required
+def admin_dashboard(request):
+    if not request.user.is_admin():
+        raise PermissionError(f"You don't have permission to access this view\nYour role: {request.user.role}")
+
+    account_requests = AccountRequests.objects.all().order_by('-a_request_id')
+    return render(request, 'admin_dashboard.html', {'account_requests': account_requests})
+
+
+def approve_request(request, request_id):
+    account_request = AccountRequests.objects.get(pk=request_id)
+    Users.objects.create(email=account_request.email, role_id=account_request.role_id)
+    account_request.delete()
+    return redirect('request_list')
+
+
+def reject_request(request, request_id):
+    account_request = AccountRequests.objects.get(pk=request_id)
+    account_request.delete()
+    return redirect('request_list')
+
+
+@login_required
+def user_list(request):
+    user = request.user
+    if user.is_admin():
+        users = Users.objects.all()
+    elif user.role == Roles.objects.get(name='Coordinator'):
+        users = Clubs.objects.get(club_id=user.user_id).members.all()
+    else:
+        users = [user]
+    return render(request, 'user_list.html', {'users': users})
+
+
+def index(request):
+    return render(request, "index.html")
+
+
+def discover(request):
+    clubs = Clubs.objects.all()
+    return render(request, "discover.html", {'clubs': clubs})
+
+
+def create_event(request):
+    return render(request, "create_event.html")
+
+
+def prompt_club(request):
+    return render(request, "prompt_club.html")
+
+
+def create_club(request):
+    return render(request, "create_club.html")
+
+
+def signup_request(request):
+    return render(request, "signup_request.html")
+
+
+def view_event(request):
+    return render(request, "view_event.html")
