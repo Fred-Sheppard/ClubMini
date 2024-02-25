@@ -28,9 +28,10 @@ def create_club(request):
     return render(request, "create_club.html")
 
 
-def requests(request):
+def admin_dashboard(request):
     accountrequests = AccountRequests.objects.all().order_by('-a_request_id')
-    return render(request, 'requests.html', {'accountrequests': accountrequests})
+    return render(request, 'admin_dashboard.html', {'accountrequests': accountrequests})
+
 
 def approve_request(request, request_id):
     account_request = AccountRequests.objects.get(pk=request_id)
@@ -38,10 +39,12 @@ def approve_request(request, request_id):
     account_request.delete()
     return redirect('request_list')
 
+
 def reject_request(request, request_id):
     account_request = AccountRequests.objects.get(pk=request_id)
     account_request.delete()
     return redirect('request_list')
+
 
 def signup_request(request):
     return render(request, "signup_request.html")
@@ -53,23 +56,25 @@ def view_event(request):
 
 def login_view(request):
     if request.method != 'POST':
-        form = LoginForm()
-    else:
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            user = authenticate(request, username=username, password=password)
-            if user is None:
-                pass
-            login(request, user)
-            if user.role is not None:
-                # admin_dashboard, student_dashboard etc
-                dashboard = str(user.role).lower() + '_dashboard'
-            else:
-                dashboard = ''
-            return redirect(dashboard)
-    return render(request, 'login.html', {'form': form})
+        return render(request, 'login.html', {'form': LoginForm()})
+    form = LoginForm(request.POST)
+    if form.is_valid():
+        username = form.cleaned_data['username']
+        password = form.cleaned_data['password']
+        user = authenticate(request, username=username, password=password)
+        if user is None:
+            pass
+        login(request, user)
+        if user.is_admin():
+            role = 'Admin'
+        else:
+            role = user.role
+        if role is not None:
+            # admin_dashboard, student_dashboard etc
+            dashboard = str(role).lower() + '_dashboard'
+        else:
+            dashboard = ''
+        return redirect(dashboard)
 
 
 @login_required
