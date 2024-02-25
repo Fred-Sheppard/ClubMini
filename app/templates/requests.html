@@ -1,23 +1,18 @@
-{%extends 'base.html'%}
-{%block content%}
+{% extends 'base.html' %}
+{% block content %}
 <h1>New User Requests</h1>
 <div id="dashboard-layout">
-<div id="your-clubs">
-<h3>Requests:</h3>
-<ul>
-    <li><p>User Requests appear reverse chronological</p></li>
-    <li><p>User Requests appear reverse chronological</p></li>
-    <li><p>User Requests appear reverse chronological</p></li>
-</ul>
+    <div id="your-clubs">
+        <h3>Requests:</h3>
+        <ul>
+            {% for accountrequest in accountrequests %}
+                <li>
+                    <p>{{ accountrequest.email }} - {{ accountrequest.date_inserted }}</p>
+                    <a href="{% url 'approve_request' accountrequest.a_request_id %}">Approve</a>
+                    <a href="{% url 'reject_request' accountrequest.a_request_id %}">Reject</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 </div>
-<div id="upcoming-events">
-<h3>Users:</h3>
-<ul>
-    <li><p>Users approved chronological</p></li>
-    <li><p>Users approved chronological</p></li>
-    <li><p>Users approved chronological</p></li>
-    <li><p>Users approved chronological</p></li>
-</ul>
-</div>
-</div>
-{%endblock%}
+{% endblock %}

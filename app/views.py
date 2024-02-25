@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.utils import timezone
 
 from .forms import LoginForm
-from .models import Events, Users, Clubs, ClubRequests, Roles
+from .models import AccountRequests, Events, Users, Clubs, ClubRequests, Roles
 
 
 def index(request):
@@ -29,8 +29,19 @@ def create_club(request):
 
 
 def requests(request):
-    return render(request, "requests.html")
+    accountrequests = AccountRequests.objects.all().order_by('-a_request_id')
+    return render(request, 'requests.html', {'accountrequests': accountrequests})
 
+def approve_request(request, request_id):
+    account_request = AccountRequests.objects.get(pk=request_id)
+    approved_user = Users.objects.create(email=account_request.email, role_id=account_request.role_id)
+    account_request.delete()
+    return redirect('request_list')
+
+def reject_request(request, request_id):
+    account_request = AccountRequests.objects.get(pk=request_id)
+    account_request.delete()
+    return redirect('request_list')
 
 def signup_request(request):
     return render(request, "signup_request.html")
