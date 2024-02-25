@@ -10,7 +10,12 @@ header {
     background: #171717 scroll;
 }
 
-#nav-bar {
+#nav-bar-left {
+    float: left;
+    padding-top: 10px;
+}
+
+#nav-bar-right {
     float: right;
     padding-top: 10px;
 }
@@ -21,7 +26,6 @@ header {
     width: 140px;
     float: left;
     text-align: center;
-
 }
 
 #header-option:hover {
@@ -135,10 +139,10 @@ h3 {
 }
 
 footer {
-  padding: 40px 0;
-  color: white;
-  background: #171717;
-  height:90px;
+    padding: 40px 0;
+    color: white;
+    background: #171717;
+    height: 90px;
 
 
 }
@@ -230,7 +234,7 @@ form label {
     height: 100px;
     width: max-content;
     padding-top: 20px;
-    padding-left:  30px;
+    padding-left: 30px;
     padding-right: 30px;
 
     float: left;
@@ -240,77 +244,87 @@ form label {
     align-items: center;
 
 
-
-     border: 2px solid black;
+    border: 2px solid black;
     border-radius: 5px;
 }
-#upcoming-events2{
-     height: fit-content;
+
+#upcoming-events2 {
+    height: fit-content;
     width: fit-content;
-    padding:20px 90px;
+    padding: 20px 90px;
     float: left;
     margin-left: 50px;
 
     background: #790f0f;
     color: white;
 }
+
 #upcoming-events2 h2 {
     margin: 0;
 }
-#left-container{
-    float:left;
+
+#left-container {
+    float: left;
     display: flex;
     flex-direction: column;
 
 }
-#requests{
-   color: white;
-  padding: 20px;
-  margin-bottom: 20px;
-  text-align: center;
+
+#requests {
+    color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center;
 
 }
-#requests ul{
-     font-size: 20px;
-    font-family: Helvetica;
+
+#requests ul {
+    font-size: 20px;
+    font-family: Helvetica, sans-serif;
     color: white;
     list-style: none;
-  padding: 0;
-  margin: 0 auto; /* Center the list horizontally */
-  max-width: 400px; /* Optional: Adjust the max-width as needed */
+    padding: 0;
+    margin: 0 auto; /* Center the list horizontally */
+    max-width: 400px; /* Optional: Adjust the max-width as needed */
 }
-#requests li{
+
+#requests li {
     text-align: left;
 }
-#requests h2{
+
+#requests h2 {
     margin: 20px;
 }
 
-#members-control{
+#members-control {
     color: white;
     display: flex;
     flex-direction: column;
 
 }
-#members{
-   color: white;
-  padding: 20px;
-  margin-bottom: 20px;
-  text-align: center;
+
+#members {
+    color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center;
 
 }
-#members ul{
-     font-size: 20px;
-    font-family: Helvetica;
+
+#members ul {
+    font-size: 20px;
+    font-family: Helvetica, sans-serif;
     color: white;
-    list-style: none;
-  padding: 0;
-  margin: 0 auto; /* Center the list horizontally */
-  max-width: 400px; /* Optional: Adjust the max-width as needed */
+    list-style: inside;
+    padding: 0;
+    margin: 0 auto; /* Center the list horizontally */
+    max-width: 400px; /* Optional: Adjust the max-width as needed */
 }
-#members li{
+
+#members li {
     text-align: left;
 }
-#members h2{
+
+#members h2 {
     margin: 20px;
 }
