@@ -30,6 +30,7 @@
                             <li>{{ club_request.user.email }}</li>
                             <li>{{ club_request.date_updated }}</li>
                         </ul>
+                        <a href="{% url 'approve_club_request' club_request.id  %}">Approve</a>
                     </li>
                 {% endfor %}
             </ul>

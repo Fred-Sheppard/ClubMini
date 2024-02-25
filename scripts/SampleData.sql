@@ -42,9 +42,9 @@ VALUES ('new_coordinator@example.com', 1),
        ('new_student@example.com', 2);
 
 INSERT INTO app_clubs (club_id, name, description, accepting_members)
-VALUES (1, 'Coding Club', 'Learn and share your coding skills', TRUE),
-       (2, 'Photography Club', 'Capture the world through your lens', FALSE),
-       (3, 'Book Club', 'Discuss and analyze your favorite books', TRUE);
+VALUES (2, 'Coding Club', 'Learn and share your coding skills', TRUE),
+       (4, 'Photography Club', 'Capture the world through your lens', FALSE),
+       (8, 'Book Club', 'Discuss and analyze your favorite books', TRUE);
 
 INSERT INTO app_clubs_members (users_id, clubs_id)
 VALUES (3, 1),

@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.utils import timezone
 
 from .forms import LoginForm
-from .models import AccountRequests, Events, Users, Clubs, ClubRequests, Roles
+from .models import AccountRequests, Events, Users, Clubs, ClubRequests
 
 
 def login_view(request):
@@ -37,7 +37,7 @@ def login_view(request):
 
 @login_required
 def student_dashboard(request):
-    if request.user.role != Roles.objects.get(name='Student'):
+    if not request.user.has_role('Student'):
         raise PermissionError(f"You don't have permission to access this view\nYour role: {request.user.role}")
 
     today = timezone.now()
@@ -48,13 +48,16 @@ def student_dashboard(request):
 
 @login_required
 def coordinator_dashboard(request):
-    if request.user.role != Roles.objects.get(name='Coordinator'):
+    if not request.user.has_role('Coordinator'):
         raise PermissionError(f"You don't have permission to access this view\nYour role: {request.user.role}")
 
-    club = Clubs.objects.filter(club_id=request.user.user_id)[0]
-    events = Events.objects.filter(club__name=club.__str__())
-    club_requests = ClubRequests.objects.filter(club__name=club.__str__())
-    members = club.members.all()
+    try:
+        club = Clubs.objects.filter(club_id=request.user.user_id)[0]
+        events = Events.objects.filter(club__name=club.__str__())
+        club_requests = ClubRequests.objects.filter(club__name=club.__str__())
+        members = club.members.all()
+    except IndexError:
+        return render(request, 'create_club.html')
     return render(request, 'coordinator_dashboard.html',
                   {'club': club, 'events': events, 'club_requests': club_requests, 'members': members})
 
@@ -86,7 +89,7 @@ def user_list(request):
     user = request.user
     if user.is_admin():
         users = Users.objects.all()
-    elif user.role == Roles.objects.get(name='Coordinator'):
+    elif user.has_role('Coordinator'):
         users = Clubs.objects.get(club_id=user.user_id).members.all()
     else:
         users = [user]
@@ -99,7 +102,56 @@ def index(request):
 
 def discover(request):
     clubs = Clubs.objects.all()
-    return render(request, "discover.html", {'clubs': clubs})
+    if request.user.has_role('Student'):
+        user_clubs = Users.objects.get(name=request.user.name).members.all()
+        lt_3_clubs = len(user_clubs) < 3
+        messages = {}
+        for club in clubs:
+            if club in user_clubs:
+                messages[club] = 'Already a member'
+            elif len(ClubRequests.objects.filter(user_id=request.user.user_id)) >= 1:
+                messages[club] = 'Already applied'
+            elif not lt_3_clubs:
+                messages[club] = 'Can only join 3 clubs'
+            else:
+                # An empty message will be replaced by a link to apply for that club
+                messages[club] = ''
+    else:
+        messages = {}
+    return render(request, "discover.html", {'messages': messages})
+
+
+@login_required()
+def apply_for_club(request, club_id):
+    if not request.user.has_role('Student'):
+        raise PermissionError(f"You don't have permission to access this view\nYour role: {request.user.role}")
+
+    ClubRequests.objects.create(user_id=request.user.user_id, club_id=club_id)
+    return redirect('discover')
+
+
+@login_required
+def approve_club_request(request, club_request_id):
+    raise PermissionError("This doesn't work yet")
+    if not request.user.has_role('Coordinator'):
+        raise PermissionError(f"You don't have permission to access this view\nYour role: {request.user.role}")
+
+    club_request = ClubRequests.objects.get(id=club_request_id)
+    club = Clubs.objects.get(club_id=club_request.club_id)
+    print(club.members.all())
+    user = Users.objects.get(user_id=club_request.user_id)
+    # club.members.create(user_id=user.user_id, role_id=user.role_id)
+    # ClubMembers.objects.create(user_id=club_request.user_id, club_id=club_request.club_id)
+    print(len(club.members.all()))
+
+    # club_request.delete()
+    return redirect('coordinator_dashboard')
+
+
+# def reject_club_request(request, user_id):
+#     account_request = AccountRequests.objects.get(pk=request_id)
+#     account_request.delete()
+#     return redirect('request_list')
 
 
 def create_event(request):

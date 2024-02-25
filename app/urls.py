@@ -7,6 +7,7 @@ urlpatterns = [
     path("login/", views.login_view, name='login'),
     path("accounts/login/", views.login_view, name='login'),
     path("discover/", views.discover, name='discover'),
+    path('apply_for_club/<int:club_id>/', views.apply_for_club, name='apply_for_club'),
     path("create_event/", views.create_event, name='create_event'),
     path("prompt_club/", views.prompt_club, name='prompt_club'),
     path("create_club/", views.create_club, name='create_club'),
@@ -18,4 +19,5 @@ urlpatterns = [
     path("view_event/", views.view_event, name='view_event'),
     path("coordinator_dashboard/", views.coordinator_dashboard, name='coordinator_dashboard'),
     path("user_list/", views.user_list, name='user_list'),
+    path("approve_club_request/<int:club_request_id>", views.approve_club_request, name='approve_club_request'),
 ]

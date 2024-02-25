@@ -46,6 +46,9 @@ class Users(AbstractBaseUser):
     def is_admin(self):
         return self.user_id == 1
 
+    def has_role(self, role: str):
+        return self.role == Roles.objects.get(name=role)
+
     def set_password(self, raw_password):
         self.password = make_password(raw_password)
 
