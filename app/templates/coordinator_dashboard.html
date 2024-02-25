@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+    <div id="left-container">
     <div id="club-name-box">
         <h1>{{ club }}</h1>
         <div id="edit-club-name">
@@ -7,7 +8,7 @@
         </div>
     </div>
     <div id="event-control">
-        <button class="create-event">Create Event</button>
+        <button class="create-event">Create Event</button><br>
         <div id="upcoming-events2">
             <h2>Events</h2>
             <ul>
@@ -18,6 +19,7 @@
                 {% endfor %}
             </ul>
         </div>
+    </div>
     </div>
     <div id="members-control">
         <div id="requests">

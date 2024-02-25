@@ -106,10 +106,11 @@ h3{
     border: 1px solid black;
     height: 30px;
     width: 120px;
-    background: rgb(248, 248, 248);
+    background: rgba(154, 39, 39, 0.88);
     display: flex;
     justify-content: center;
     align-items: center;
+    color: white;
 
 
 }
@@ -120,9 +121,12 @@ h3{
     width:320px;
     text-align: center;
     margin: 80px;
+    float: left;
 
     font-size: 40px;
     color: white;
+    align-items: center;
+    justify-content: center;
 }
 /*  }           */
 footer {
@@ -130,7 +134,7 @@ footer {
   color: white;
   background: #171717;
   height:90px;
-    margin:0;
+
 
 }
 p{
@@ -210,23 +214,91 @@ form label{
 }
 #club-name-box{
     background: #790f0f;
-    padding: 5px;
+    margin-left: 5px;
     height: 100px;
-    width: fit-content(110%);
+    width: max-content;
+    padding-top: 20px;
+    padding-left:  30px;
+    padding-right: 30px;
+
     float: left;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
+
+
+
+     border: 2px solid black;
+    border-radius: 5px;
 }
 #upcoming-events2{
-    margin: 100px;
      height: fit-content;
+    width: fit-content;
+    padding:20px 90px;
     float: left;
+    margin-left: 50px;
 
     background: #790f0f;
     color: white;
 }
+#upcoming-events2 h2 {
+    margin: 0;
+}
+#left-container{
+    float:left;
+    display: flex;
+    flex-direction: column;
+
+}
+#requests{
+   color: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+
+}
+#requests ul{
+     font-size: 20px;
+    font-family: Helvetica;
+    color: white;
+    list-style: none;
+  padding: 0;
+  margin: 0 auto; /* Center the list horizontally */
+  max-width: 400px; /* Optional: Adjust the max-width as needed */
+}
+#requests li{
+    text-align: left;
+}
+#requests h2{
+    margin: 20px;
+}
+
 #members-control{
     color: white;
+    display: flex;
+    flex-direction: column;
 
+}
+#members{
+   color: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+
+}
+#members ul{
+     font-size: 20px;
+    font-family: Helvetica;
+    color: white;
+    list-style: none;
+  padding: 0;
+  margin: 0 auto; /* Center the list horizontally */
+  max-width: 400px; /* Optional: Adjust the max-width as needed */
+}
+#members li{
+    text-align: left;
+}
+#members h2{
+    margin: 20px;
 }
