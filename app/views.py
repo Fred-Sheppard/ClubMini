@@ -36,10 +36,9 @@ def student_dashboard(request):
 
     today = timezone.now()
 
-    clubs = [Clubs.objects.get(club_id=relationship.club_id) for relationship in
-             ClubMembers.objects.filter(user_id=request.user.user_id).all()]
-    events = Events.objects.filter(club__in=clubs).filter(event_time__gt=today).order_by('event_time')[:3]
-    return render(request, 'student_dashboard.html', {'events': events, 'clubs': clubs})
+    events = Events.objects.filter(club__in=request.user.get_clubs()).filter(event_time__gt=today) \
+                 .order_by('event_time')[:3]
+    return render(request, 'student_dashboard.html', {'events': events, 'clubs': request.user.get_clubs()})
 
 
 @login_required
@@ -51,14 +50,13 @@ def coordinator_dashboard(request):
         club = Clubs.objects.filter(club_id=request.user.user_id)[0]
         events = Events.objects.filter(club__name=club.__str__())
         club_requests = ClubRequests.objects.filter(club__name=club.__str__())
-        members = club.members()
+        members = club.members
     except IndexError:
         return render(request, 'create_club.html')
     return render(request, 'coordinator_dashboard.html',
                   {'club': club, 'events': events, 'club_requests': club_requests, 'members': members})
 
 
-@login_required
 @login_required
 def admin_dashboard(request):
     if not request.user.is_admin():
@@ -91,7 +89,7 @@ def user_list(request):
     if user.is_admin():
         users = Users.objects.all()
     elif user.has_role('Coordinator'):
-        users = Clubs.objects.get(club_id=user.user_id).members()
+        users = Clubs.objects.get(club_id=user.user_id).members
     else:
         users = [user]
     return render(request, 'user_list.html', {'users': users})
@@ -104,11 +102,10 @@ def index(request):
 def discover(request):
     clubs = Clubs.objects.all()
     if request.user.has_role('Student'):
-        user_clubs = Users.objects.get(name=request.user.name).members.all()
-        lt_3_clubs = len(user_clubs) < 3
+        lt_3_clubs = len(request.user.get_clubs()) < 3
         messages = {}
         for club in clubs:
-            if club in user_clubs:
+            if club in request.user.get_clubs():
                 messages[club] = 'Already a member'
             elif len(ClubRequests.objects.filter(user_id=request.user.user_id)) >= 1:
                 messages[club] = 'Already applied'
@@ -156,13 +153,6 @@ def prompt_club(request):
     return render(request, "prompt_club.html")
 
 
-@login_required
-def create_club(request):
-    if not request.user.has_role('Coordinator'):
-        raise PermissionError(f"You don't have permission to access this view\nYour role: {request.user.role}")
-    return render(request, "create_club.html")
-
-
 def register(request):
     roles = Roles.objects.all()
     if request.method == 'POST':
@@ -207,9 +197,7 @@ def approve_event_request(request, event_id, user_id):
     if not request.user.has_role('Coordinator'):
         raise PermissionError(f"You don't have permission to access this view\nYour role: {request.user.role}")
     EventMembers.objects.create(event_id=event_id, user_id=user_id)
-    print(EventRequests.objects.filter(event_id=event_id, user_id=user_id))
     EventRequests.objects.filter(event_id=event_id, user_id=user_id).delete()
-    print(EventRequests.objects.filter(event_id=event_id, user_id=user_id))
     return redirect(view_event, event_id)
 
 

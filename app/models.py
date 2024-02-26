@@ -34,6 +34,10 @@ class Users(AbstractBaseUser):
     date_inserted = models.DateTimeField(auto_now_add=True, null=True)
     date_updated = models.DateTimeField(auto_now=True, null=True)
 
+    def get_clubs(self):
+        return [Clubs.objects.get(club_id=relationship.club_id) for relationship in
+                ClubMembers.objects.filter(user_id=self.user_id).all()]
+
     user_permissions = models.ManyToManyField(Permission, related_name='custom_user_permissions')
     objects = UsersManager()
 
@@ -80,6 +84,7 @@ class Clubs(models.Model):
     date_inserted = models.DateTimeField(auto_now_add=True, null=True)
     date_updated = models.DateTimeField(auto_now=True, null=True)
 
+    @property
     def members(self):
         return [Users.objects.get(user_id=relationship.user_id) for relationship in
                 ClubMembers.objects.filter(club_id=self.club_id).all()]
