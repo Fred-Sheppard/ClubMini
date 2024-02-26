@@ -1,40 +1,59 @@
-insert into auth_group (name)
-values ('Admin'),
-       ('Coordinator'),
-       ('Student');
-
 -- -- INSERT statements with at least 3 samples
 INSERT INTO app_roles (name)
 VALUES ('Coordinator'),
        ('Student');
 
-INSERT INTO app_users (role_id, name, email, password, group_id)
-VALUES (1, 'John Doe', 'john.doe@example.com',
-        'pbkdf2_sha256$720000$D6bRqUkBTWMkIc4kMD7jmT$BtAI4S+jmOhlsFR+ADbbZS3ul1Rq5tqRLPURV5VuIJc=', 1),
+INSERT INTO app_users (role_id, name, email, password, contact_details)
+VALUES (1, 'Admin', 'admin@example.com',
+        'pbkdf2_sha256$720000$D6bRqUkBTWMkIc4kMD7jmT$BtAI4S+jmOhlsFR+ADbbZS3ul1Rq5tqRLPURV5VuIJc=',
+        '+1234567890'),
+
+       (1, 'John Doe', 'john.doe@example.com',
+        'pbkdf2_sha256$720000$D6bRqUkBTWMkIc4kMD7jmT$BtAI4S+jmOhlsFR+ADbbZS3ul1Rq5tqRLPURV5VuIJc=',
+        '+1987654321'),
+
        (2, 'Jane Smith', 'jane.smith@example.com',
-        'pbkdf2_sha256$720000$D6bRqUkBTWMkIc4kMD7jmT$BtAI4S+jmOhlsFR+ADbbZS3ul1Rq5tqRLPURV5VuIJc=', 1),
+        'pbkdf2_sha256$720000$D6bRqUkBTWMkIc4kMD7jmT$BtAI4S+jmOhlsFR+ADbbZS3ul1Rq5tqRLPURV5VuIJc=',
+        '+1555123456'),
+
        (1, 'Mary Jones', 'mary.jones@example.com',
-        'pbkdf2_sha256$720000$D6bRqUkBTWMkIc4kMD7jmT$BtAI4S+jmOhlsFR+ADbbZS3ul1Rq5tqRLPURV5VuIJc=', 2);
+        'pbkdf2_sha256$720000$D6bRqUkBTWMkIc4kMD7jmT$BtAI4S+jmOhlsFR+ADbbZS3ul1Rq5tqRLPURV5VuIJc=',
+        '+12223334444'),
+
+       (2, 'Alice Johnson', 'alice.johnson@example.com',
+        'pbkdf2_sha256$720000$D6bRqUkBTWMkIc4kMD7jmT$BtAI4S+jmOhlsFR+ADbbZS3ul1Rq5tqRLPURV5VuIJc=',
+        '+18887776666'),
+
+       (2, 'Bob Williams', 'bob.williams@example.com',
+        'pbkdf2_sha256$720000$D6bRqUkBTWMkIc4kMD7jmT$BtAI4S+jmOhlsFR+ADbbZS3ul1Rq5tqRLPURV5VuIJc=',
+        '+14443332222'),
+
+       (2, 'Emily Brown', 'emily.brown@example.com',
+        'pbkdf2_sha256$720000$D6bRqUkBTWMkIc4kMD7jmT$BtAI4S+jmOhlsFR+ADbbZS3ul1Rq5tqRLPURV5VuIJc=',
+        '+16667778888'),
+
+       (1, 'Michael Wilson', 'michael.wilson@example.com',
+        'pbkdf2_sha256$720000$D6bRqUkBTWMkIc4kMD7jmT$BtAI4S+jmOhlsFR+ADbbZS3ul1Rq5tqRLPURV5VuIJc=',
+        '+19998887777');
 
 INSERT INTO app_accountrequests (email, role_id)
 VALUES ('new_coordinator@example.com', 1),
-       ('new_admin@example.com', 1),
+       ('some_student@example.com', 2),
        ('new_student@example.com', 2);
 
 INSERT INTO app_clubs (club_id, name, description, accepting_members)
-VALUES (1, 'Coding Club', 'Learn and share your coding skills', TRUE),
-       (2, 'Photography Club', 'Capture the world through your lens', FALSE),
-       (3, 'Book Club', 'Discuss and analyze your favorite books', TRUE);
+VALUES (2, 'Coding Club', 'Learn and share your coding skills', TRUE),
+       (4, 'Photography Club', 'Capture the world through your lens', FALSE),
+       (8, 'Book Club', 'Discuss and analyze your favorite books', TRUE);
 
 INSERT INTO app_clubs_members (users_id, clubs_id)
-VALUES (2, 1),
-       (3, 2),
-       (1, 3);
+VALUES (3, 1),
+       (5, 2),
+       (6, 3);
 
 INSERT INTO app_clubrequests (user_id, club_id)
-VALUES (1, 2),
-       (2, 3),
-       (3, 1);
+VALUES (7, 2),
+       (8, 1);
 
 INSERT INTO app_events (title, description, club_id, event_time, venue)
 VALUES ('Intro to Python', 'Learn the basics of Python programming', 1, '2024-03-02 18:00:00', 'Room 201'),
@@ -43,13 +62,6 @@ VALUES ('Intro to Python', 'Learn the basics of Python programming', 1, '2024-03
        ('Book Club Meeting', 'Discuss the latest bestseller', 3, '2024-03-15 19:00:00', 'Library Auditorium');
 
 INSERT INTO app_eventrequests (event_id, user_id)
-VALUES (1, 2),
-       (2, 3),
-       (3, 1);
-
--- CREATE views (if needed)
--- CREATE VIEW coordinators AS
--- ...
-
--- CREATE VIEW students AS
--- ...
+VALUES (6, 1),
+       (7, 3),
+       (3, 2);

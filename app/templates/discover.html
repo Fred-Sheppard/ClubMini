@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
     <h1> Discover </h1>
-    <ul>
-        {% for club in clubs %}
+    <ul style="color: white">
+        {% for club, message in messages.items %}
             <li>
                 {{ club.name }}
                 <ul>
@@ -11,6 +11,12 @@
                     <li>
                         {% if club.accepting_members %}
                             Accepting members!
+                            <br>
+                            {% if message == '' %}
+                                <a href="{% url 'apply_for_club' club.club_id %}">Apply Now!</a>
+                            {% else %}
+                                {{ message }}
+                            {% endif %}
                         {% else %}
                             Currently closed to new members
                         {% endif %}

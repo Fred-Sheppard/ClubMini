@@ -1,46 +1,55 @@
 header {
-  color: White;
-  height: 90px;
-  font-size: 35px;
-  text-align: right;
-  font-family: Overpass, Geneva, Tahoma, sans-serif;
-  background-size: 120px;
-  word-spacing: 20px;
-  padding-right: 10px;
-  background: #171717 scroll;
+    color: White;
+    height: 90px;
+    font-size: 35px;
+    text-align: right;
+    font-family: Overpass, Geneva, Tahoma, sans-serif;
+    background-size: 120px;
+    word-spacing: 20px;
+    padding-right: 10px;
+    background: #171717 scroll;
 }
-#nav-bar{
+
+#nav-bar-left {
+    float: left;
+    padding-top: 10px;
+}
+
+#nav-bar-right {
     float: right;
     padding-top: 10px;
 }
-#header-option{
+
+#header-option {
     margin: 10px;
-    height:55px;
-    width:140px;
+    height: 55px;
+    width: 140px;
     float: left;
     text-align: center;
-
 }
+
 #header-option:hover {
     /*color: white;*/
     background: #156bfd;
-     box-shadow: 0 0 2px 3px white;
+    box-shadow: 0 0 2px 3px white;
 }
 
-.background-colour{
+.background-colour {
     background: #212121;
     width: 100%;
     height: 100%;
 }
-.background-image{
-  width: 100%;
+
+.background-image {
+    width: 100%;
     height: 100%;
     background-image: url('https://hea.ie/assets/uploads/2017/04/UL-1000x500.jpg');
     background-repeat: no-repeat;
     background-size: cover;
 
 }
-#title-box{
+
+#title-box {
 
     background-color: rgba(255, 255, 255, 0.2);
     padding: 20px;
@@ -48,61 +57,61 @@ header {
     color: #ffffff;
 }
 
-h1{
-  font-size: 50px;
-  text-align:center;
-  font-family: impact;
+h1 {
+    font-size: 50px;
+    text-align: center;
+    font-family: impact, sans-serif;
     color: white;
 
 }
-h2{
-  font-size: 120px;
-  text-align:center;
-  font-family: impact;
+
+h2 {
+    font-size: 120px;
+    text-align: center;
+    font-family: impact, sans-serif;
     color: #ffffff;
 
 }
-h3{
-    font-size:65px;
+
+h3 {
+    font-size: 65px;
     text-align: left;
     color: #ffffff;
 
 }
 
 /*Buttons{      */
-#Login-button{
-  background-color: red;
-  height:80px;
-  width:250px;
-   margin: 0 auto;
-  text-align:center;
-  margin-top:20px;
-  margin-bottom:30px;
- line-height:80px;
+#Login-button {
+    background-color: red;
+    height: 80px;
+    width: 250px;
+    text-align: center;
+    margin: 20px auto 30px;
+    line-height: 80px;
 
-  font-size:35px;
-  border-radius:11px;
-  color:white;
+    font-size: 35px;
+    border-radius: 11px;
+    color: white;
 }
 
-#Login-button:hover{
+#Login-button:hover {
     box-shadow: 0 0 2px 3px yellow;
 }
 
 
 .big-button {
-  font-size: 24px;
-  padding: 20px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  width: 80%; /* Adjust the width as needed */
-  margin: 230px;
+    font-size: 24px;
+    padding: 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 80%; /* Adjust the width as needed */
+    margin: 230px;
 }
 
-.edit-name{
+.edit-name {
     border: 1px solid black;
     height: 30px;
     width: 120px;
@@ -115,10 +124,10 @@ h3{
 
 }
 
-.create-event{
+.create-event {
     background: #790f0f;
     height: 80px;
-    width:320px;
+    width: 320px;
     text-align: center;
     margin: 80px;
     float: left;
@@ -130,7 +139,7 @@ h3{
     align-items: center;
     justify-content: center;
 }
-/*  }           */
+
 footer {
   padding: 40px 0;
   color: white;
@@ -139,88 +148,95 @@ footer {
   clear: both;
 
 }
-p{
-  font-size:20px;
+
+p {
+    font-size: 20px;
     color: white;
 
 }
-a{
-  font-family:Helvetica;
+
+a {
+    font-family: Helvetica, sans-serif;
     color: white;
 }
 
-#your-clubs{
+#your-clubs {
     padding: 5px;
     height: fit-content;
 
     background: #790f0f;
     color: white;
 }
-#your-clubs.h3{
+
+#your-clubs.h3 {
     border-bottom: black 1px;
 
 }
-#upcoming-events{
+
+#upcoming-events {
     padding: 5px;
-     height: fit-content;
+    height: fit-content;
 
     background: #790f0f;
     color: white;
 }
-#dashboard-layout{
-     display: grid;
-  grid-template-columns: repeat(2, 1fr);
+
+#dashboard-layout {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
 }
-#blank{
+
+#blank {
     height: 200px;
     background: #212121;
 }
 
 
-form label{
+form label {
     font-size: 20px;
     color: white;
 }
 
 .container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .event-details {
-  grid-column: 1;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+    grid-column: 1;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
 }
 
 .requests {
-  float: right;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+    float: right;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
 }
 
 .requests ul {
-  list-style: none;
-  padding: 0;
+    list-style: none;
+    padding: 0;
 }
 
 .requests li {
-  margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 
 .requests li span {
-  color: white;
+    color: white;
 }
-#club-name-box{
+
+#club-name-box {
     background: #790f0f;
     margin-left: 5px;
     height: 100px;
     width: max-content;
     padding-top: 20px;
-    padding-left:  30px;
+    padding-left: 30px;
     padding-right: 30px;
 
     float: left;
@@ -230,14 +246,14 @@ form label{
     align-items: center;
 
 
-
-     border: 2px solid black;
+    border: 2px solid black;
     border-radius: 5px;
 }
-#upcoming-events2{
-     height: fit-content;
+
+#upcoming-events2 {
+    height: fit-content;
     width: fit-content;
-    padding:20px 90px;
+    padding: 20px 90px;
     float: left;
     margin-left: 50px;
     margin-bottom: 20px;
@@ -258,54 +274,62 @@ form label{
 
 
 }
-#requests{
-   color: white;
-  padding: 20px;
-  margin-bottom: 20px;
-  text-align: center;
+
+#requests {
+    color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center;
 
 }
-#requests ul{
-     font-size: 20px;
-    font-family: Helvetica;
+
+#requests ul {
+    font-size: 20px;
+    font-family: Helvetica, sans-serif;
     color: white;
     list-style: none;
-  padding: 0;
-  margin: 0 auto; /* Center the list horizontally */
-  max-width: 400px; /* Optional: Adjust the max-width as needed */
+    padding: 0;
+    margin: 0 auto; /* Center the list horizontally */
+    max-width: 400px; /* Optional: Adjust the max-width as needed */
 }
-#requests li{
+
+#requests li {
     text-align: left;
 }
-#requests h2{
+
+#requests h2 {
     margin: 20px;
 }
 
-#members-control{
+#members-control {
     color: white;
     display: flex;
     flex-direction: column;
 
 }
-#members{
-   color: white;
-  padding: 20px;
-  margin-bottom: 20px;
-  text-align: center;
+
+#members {
+    color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center;
 
 }
-#members ul{
-     font-size: 20px;
-    font-family: Helvetica;
+
+#members ul {
+    font-size: 20px;
+    font-family: Helvetica, sans-serif;
     color: white;
-    list-style: none;
-  padding: 0;
-  margin: 0 auto; /* Center the list horizontally */
-  max-width: 400px; /* Optional: Adjust the max-width as needed */
+    list-style: inside;
+    padding: 0;
+    margin: 0 auto; /* Center the list horizontally */
+    max-width: 400px; /* Optional: Adjust the max-width as needed */
 }
-#members li{
+
+#members li {
     text-align: left;
 }
-#members h2{
+
+#members h2 {
     margin: 20px;
 }

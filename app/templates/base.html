@@ -5,12 +5,16 @@
 <head>
     <meta charset="UTF-8">
     <title>ClubHub</title>
-    <link rel="icon" type="image/x-icon" href={% static 'favicon.ico' %}>
+    <link rel="icon" type="image/x-icon" href={% static 'images/favicon.ico' %}>
 </head>
 <header>
-    <div id="nav-bar">
+    <div id="nav-bar-left">
+        <div id="header-option">{{ user.role }}</div>
+    </div>
+    <div id="nav-bar-right">
         <div id="header-option"><a href="{% url 'index' %}">Home</a></div>
         <div id="header-option"><a href="{% url 'discover' %}">Discover</a></div>
+        <div id="header-option"><a href="{% url 'user_list' %}">Users</a></div>
         <div id="header-option"><a href="{% url 'login' %}">Login</a></div>
     </div>
 </header>

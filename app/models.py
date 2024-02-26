@@ -37,11 +37,17 @@ class Users(AbstractBaseUser):
     date_inserted = models.DateTimeField(auto_now_add=True, null=True)
     date_updated = models.DateTimeField(auto_now=True, null=True)
 
-    group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True)
+    # group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True)
     user_permissions = models.ManyToManyField(Permission, related_name='custom_user_permissions')  # Change related_name
     objects = UsersManager()
 
     USERNAME_FIELD = 'email'  # Update username field
+
+    def is_admin(self):
+        return self.user_id == 1
+
+    def has_role(self, role: str):
+        return self.role == Roles.objects.get(name=role)
 
     def set_password(self, raw_password):
         self.password = make_password(raw_password)
