@@ -20,4 +20,5 @@ urlpatterns = [
     path("coordinator_dashboard/", views.coordinator_dashboard, name='coordinator_dashboard'),
     path("user_list/", views.user_list, name='user_list'),
     path("approve_club_request/<int:club_request_id>", views.approve_club_request, name='approve_club_request'),
+    path("deny_club_request/<int:club_request_id>", views.deny_club_request, name='deny_club_request'),
 ]

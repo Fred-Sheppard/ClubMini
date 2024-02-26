@@ -36,17 +36,24 @@ VALUES (1, 'Admin', 'admin@example.com',
         'pbkdf2_sha256$720000$D6bRqUkBTWMkIc4kMD7jmT$BtAI4S+jmOhlsFR+ADbbZS3ul1Rq5tqRLPURV5VuIJc=',
         '+19998887777');
 
-INSERT INTO app_accountrequests (email, role_id)
-VALUES ('new_coordinator@example.com', 1),
-       ('some_student@example.com', 2),
-       ('new_student@example.com', 2);
+INSERT INTO app_accountrequests (email, role_id, password, contact_details)
+VALUES ('new_coordinator@example.com', 1,
+        'pbkdf2_sha256$720000$D6bRqUkBTWMkIc4kMD7jmT$BtAI4S+jmOhlsFR+ADbbZS3ul1Rq5tqRLPURV5VuIJc=',
+        '+19998887777'),
+       ('some_student@example.com', 2,
+        'pbkdf2_sha256$720000$D6bRqUkBTWMkIc4kMD7jmT$BtAI4S+jmOhlsFR+ADbbZS3ul1Rq5tqRLPURV5VuIJc=',
+        '+16667778888'),
+       ('new_student@example.com', 2,
+        'pbkdf2_sha256$720000$D6bRqUkBTWMkIc4kMD7jmT$BtAI4S+jmOhlsFR+ADbbZS3ul1Rq5tqRLPURV5VuIJc=',
+        '+14443332222');
 
-INSERT INTO app_clubs (club_id, name, description, accepting_members)
+INSERT
+INTO app_clubs (club_id, name, description, accepting_members)
 VALUES (2, 'Coding Club', 'Learn and share your coding skills', TRUE),
        (4, 'Photography Club', 'Capture the world through your lens', FALSE),
        (8, 'Book Club', 'Discuss and analyze your favorite books', TRUE);
 
-INSERT INTO app_clubs_members (users_id, clubs_id)
+INSERT INTO app_clubmembers (user_id, club_id)
 VALUES (3, 1),
        (5, 2),
        (6, 3);

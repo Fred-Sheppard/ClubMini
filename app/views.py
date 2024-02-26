@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.utils import timezone
 
 from .forms import LoginForm
-from .models import AccountRequests, Events, Users, Clubs, ClubRequests
+from .models import AccountRequests, Events, Users, Clubs, ClubRequests, ClubMembers
 
 
 def login_view(request):
@@ -19,20 +19,12 @@ def login_view(request):
         if user is None:
             pass
         login(request, user)
-        if user.is_admin():
-            role = 'Admin'
-        else:
-            role = user.role
-        if role is not None:
-            # admin_dashboard, student_dashboard etc
-            dashboard = str(role).lower() + '_dashboard'
-        else:
-            dashboard = ''
-
         next_url = request.GET.get('next')
         if next_url is not None:
             return HttpResponseRedirect(next_url)
-        return redirect(dashboard)
+        return redirect(user.dashboard())
+    else:
+        return render(request, 'login.html', {'form': LoginForm()})
 
 
 @login_required
@@ -55,7 +47,7 @@ def coordinator_dashboard(request):
         club = Clubs.objects.filter(club_id=request.user.user_id)[0]
         events = Events.objects.filter(club__name=club.__str__())
         club_requests = ClubRequests.objects.filter(club__name=club.__str__())
-        members = club.members.all()
+        members = club.members()
     except IndexError:
         return render(request, 'create_club.html')
     return render(request, 'coordinator_dashboard.html',
@@ -90,7 +82,7 @@ def user_list(request):
     if user.is_admin():
         users = Users.objects.all()
     elif user.has_role('Coordinator'):
-        users = Clubs.objects.get(club_id=user.user_id).members.all()
+        users = Clubs.objects.get(club_id=user.user_id).members()
     else:
         users = [user]
     return render(request, 'user_list.html', {'users': users})
@@ -132,26 +124,19 @@ def apply_for_club(request, club_id):
 
 @login_required
 def approve_club_request(request, club_request_id):
-    raise PermissionError("This doesn't work yet")
     if not request.user.has_role('Coordinator'):
         raise PermissionError(f"You don't have permission to access this view\nYour role: {request.user.role}")
 
     club_request = ClubRequests.objects.get(id=club_request_id)
-    club = Clubs.objects.get(club_id=club_request.club_id)
-    print(club.members.all())
-    user = Users.objects.get(user_id=club_request.user_id)
-    # club.members.create(user_id=user.user_id, role_id=user.role_id)
-    # ClubMembers.objects.create(user_id=club_request.user_id, club_id=club_request.club_id)
-    print(len(club.members.all()))
-
-    # club_request.delete()
+    ClubMembers.objects.create(user_id=club_request.user_id, club_id=club_request.club_id)
+    club_request.delete()
     return redirect('coordinator_dashboard')
 
 
-# def reject_club_request(request, user_id):
-#     account_request = AccountRequests.objects.get(pk=request_id)
-#     account_request.delete()
-#     return redirect('request_list')
+@login_required
+def deny_club_request(request, club_request_id):
+    ClubRequests.objects.get(id=club_request_id).delete()
+    return redirect('coordinator_dashboard')
 
 
 def create_event(request):
@@ -165,23 +150,7 @@ def prompt_club(request):
 def create_club(request):
     return render(request, "create_club.html")
 
-def club_requests(club_request):
-    member_requests = MemberRequests.objects.all().order_by('-m_request_id')
-    return render(club_request, "club_requests.html", {'memberrequests': memberrequests})
 
-def approve_club_request(club_request, request_id):
-    member_requests = MemberRequests.objects.get(pk=request_id)
-    approved_member = Members.objects.create(club_id = member_requests.club_id, user_id = member_requests.user_id)
-    member_request.delete()
-    return redirect('member_requests_list')
-
-def reject_club_request(club_request, request_id):
-    member_requests = MemberRequests.objects.get(pk=request_id)
-    member_requests.delete()
-    return redirect('member_requests_list')
-
-def member_request(club_request):
-    return render(club_request, "member_request.html")
 
 def signup_request(request):
     return render(request, "signup_request.html")
