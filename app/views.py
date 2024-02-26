@@ -5,10 +5,9 @@ from django.shortcuts import redirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.utils import timezone
-
-from .forms import ClubForm
-from .forms import LoginForm
-from .models import AccountRequests, Events, Users, Clubs, ClubRequests, ClubMembers, Roles
+from django.urls import reverse
+from .forms import AccountRequestsForm, LoginForm
+from .models import AccountRequests, Events, Roles, Users, Clubs, ClubRequests, ClubMembers
 
 
 def login_view(request):
@@ -60,17 +59,22 @@ def coordinator_dashboard(request):
 
 
 @login_required
+@login_required
 def admin_dashboard(request):
     if not request.user.is_admin():
         raise PermissionError(f"You don't have permission to access this view\nYour role: {request.user.role}")
 
     account_requests = AccountRequests.objects.all().order_by('-a_request_id')
-    return render(request, 'admin_dashboard.html', {'account_requests': account_requests})
+    users = Users.objects.all().order_by('user_id')
+    return render(request, 'admin_dashboard.html', {'account_requests': account_requests, 'users': users})
+
 
 
 def approve_request(request, request_id):
     account_request = AccountRequests.objects.get(pk=request_id)
-    Users.objects.create(email=account_request.email, role_id=account_request.role_id)
+    user = Users(email=account_request.email, role=account_request.role, name=account_request.name, contact_details=account_request.contact_details)
+    user.set_password(account_request.password)
+    user.save()
     account_request.delete()
     return redirect('admin_dashboard')
 
@@ -159,8 +163,21 @@ def create_club(request):
     return render(request, "create_club.html")
 
 
-def signup_request(request):
-    return render(request, "signup_request.html")
+
+def register(request):
+    roles = Roles.objects.all()
+    if request.method == 'POST':
+        form = AccountRequestsForm(request.POST)
+        if form.is_valid():
+            user = AccountRequests(name=form.cleaned_data['name'], email=form.cleaned_data['email'], role=form.cleaned_data['role'], contact_details=form.cleaned_data['contact_details'])
+            user.set_password(form.cleaned_data['password'])
+            user.save()
+            return redirect(index)
+    else:
+        form = AccountRequestsForm()
+
+    return render(request, 'register.html', {'form': AccountRequestsForm()})
+
 
 
 def view_event(request):

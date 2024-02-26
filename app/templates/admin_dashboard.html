@@ -14,5 +14,14 @@
                 {% endfor %}
             </ul>
         </div>
+        <div id="your-clubs">
+            <h3>Users:</h3>
+            <ul>
+                {% for user in users %}
+                    <li>
+                        <p>{{ user.email }} - {{ user.date_inserted }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
     </div>
 {% endblock %}

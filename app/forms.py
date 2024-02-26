@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth import authenticate
-from .models import Clubs
+from .models import AccountRequests, Clubs
 
 
 
@@ -22,3 +22,9 @@ class ClubForm(forms.ModelForm):
     class Meta:
         model = Clubs
         fields = ['name', 'description', 'accepting_members', 'image']
+        
+class AccountRequestsForm(forms.ModelForm):
+    
+    class Meta:
+        model = AccountRequests
+        fields = ['name', 'email', 'role', 'password', 'contact_details']
