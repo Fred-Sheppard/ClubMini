@@ -54,9 +54,9 @@ VALUES (2, 'Coding Club', 'Learn and share your coding skills', TRUE),
        (8, 'Book Club', 'Discuss and analyze your favorite books', TRUE);
 
 INSERT INTO app_clubmembers (user_id, club_id)
-VALUES (3, 1),
-       (5, 2),
-       (6, 3);
+VALUES (3, 2),
+       (5, 4),
+       (6, 8);
 
 INSERT INTO app_clubrequests (user_id, club_id)
 VALUES (7, 2),

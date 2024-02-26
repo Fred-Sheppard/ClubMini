@@ -1,11 +1,14 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
-from django.utils import timezone
+from django.shortcuts import redirect
+from django.shortcuts import render
 from django.urls import reverse
+from django.utils import timezone
+
+from .forms import ClubForm
 from .forms import LoginForm
-from .models import AccountRequests, Events, Users, Clubs, ClubRequests, ClubMembers
+from .models import AccountRequests, Events, Users, Clubs, ClubRequests, ClubMembers, Roles
 
 
 def login_view(request):
@@ -22,7 +25,7 @@ def login_view(request):
         next_url = request.GET.get('next')
         if next_url is not None:
             return HttpResponseRedirect(next_url)
-        return redirect(user.dashboard())
+        return redirect(user.dashboard)
     else:
         return render(request, 'login.html', {'form': LoginForm()})
 
@@ -33,7 +36,9 @@ def student_dashboard(request):
         raise PermissionError(f"You don't have permission to access this view\nYour role: {request.user.role}")
 
     today = timezone.now()
-    clubs = Users.objects.get(name=request.user.name).members.all()
+
+    clubs = [Clubs.objects.get(club_id=relationship.club_id) for relationship in
+             ClubMembers.objects.filter(user_id=request.user.user_id).all()]
     events = Events.objects.filter(club__in=clubs).filter(event_time__gt=today).order_by('event_time')[:3]
     return render(request, 'student_dashboard.html', {'events': events, 'clubs': clubs})
 
@@ -67,13 +72,13 @@ def approve_request(request, request_id):
     account_request = AccountRequests.objects.get(pk=request_id)
     Users.objects.create(email=account_request.email, role_id=account_request.role_id)
     account_request.delete()
-    return redirect('request_list')
+    return redirect('admin_dashboard')
 
 
 def reject_request(request, request_id):
     account_request = AccountRequests.objects.get(pk=request_id)
     account_request.delete()
-    return redirect('request_list')
+    return redirect('admin_dashboard')
 
 
 @login_required
@@ -147,9 +152,11 @@ def prompt_club(request):
     return render(request, "prompt_club.html")
 
 
+@login_required
 def create_club(request):
+    if not request.user.has_role('Coordinator'):
+        raise PermissionError(f"You don't have permission to access this view\nYour role: {request.user.role}")
     return render(request, "create_club.html")
-
 
 
 def signup_request(request):
@@ -160,11 +167,9 @@ def view_event(request):
     return render(request, "view_event.html")
 
 
-
 def club_list(request):
     clubs = Clubs.objects.all()
     return render(request, 'club_list.html', {'clubs': clubs})
-
 
 
 def club_detail(request, club_id):
@@ -172,9 +177,6 @@ def club_detail(request, club_id):
     club = Clubs.objects.get(pk=club_id)
     context = {'club': club}
     return render(request, 'club_details.html', context)
-
-from django.shortcuts import redirect
-from .forms import ClubForm
 
 
 def create_club(request):
@@ -190,9 +192,10 @@ def create_club(request):
                 except Exception as e:
                     print("Error redirecting to club detail:", e)
                     # Handle the error gracefully, e.g., show an error message
-        
+
         form = ClubForm()
     return render(request, 'create_club.html', {'form': ClubForm})
+
 
 def profile(request):
     return render(request, "profile.html")
