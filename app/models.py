@@ -110,6 +110,7 @@ class ClubRequests(models.Model):
 
 class AccountRequests(models.Model):
     a_request_id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255)
     email = models.CharField(max_length=255, unique=True)
     role = models.ForeignKey(Roles, on_delete=models.CASCADE)
     password = models.CharField(max_length=128)
