@@ -122,6 +122,8 @@ h3{
     text-align: center;
     margin: 80px;
     float: left;
+    padding-top: 20px;
+    border-radius: 15px;
 
     font-size: 40px;
     color: white;
@@ -134,7 +136,7 @@ footer {
   color: white;
   background: #171717;
   height:90px;
-
+  clear: both;
 
 }
 p{
@@ -238,6 +240,8 @@ form label{
     padding:20px 90px;
     float: left;
     margin-left: 50px;
+    margin-bottom: 20px;
+
 
     background: #790f0f;
     color: white;
@@ -249,6 +253,9 @@ form label{
     float:left;
     display: flex;
     flex-direction: column;
+    height: fit-content;
+    padding: 10px;
+
 
 }
 #requests{

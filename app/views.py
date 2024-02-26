@@ -27,6 +27,23 @@ def prompt_club(request):
 def create_club(request):
     return render(request, "create_club.html")
 
+def club_requests(club_request):
+    member_requests = MemberRequests.objects.all().order_by('-m_request_id')
+    return render(club_request, "club_requests.html", {'memberrequests': memberrequests})
+
+def approve_club_request(club_request, request_id):
+    member_requests = MemberRequests.objects.get(pk=request_id)
+    approved_member = Members.objects.create(club_id = member_requests.club_id, user_id = member_requests.user_id)
+    member_request.delete()
+    return redirect('member_requests_list')
+
+def reject_club_request(club_request, request_id):
+    member_requests = MemberRequests.objects.get(pk=request_id)
+    member_requests.delete()
+    return redirect('member_requests_list')
+
+def member_request(club_request):
+    return render(club_request, "member_request.html")
 
 def requests(request):
     accountrequests = AccountRequests.objects.all().order_by('-a_request_id')

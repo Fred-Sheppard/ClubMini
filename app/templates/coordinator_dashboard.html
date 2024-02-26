@@ -3,12 +3,10 @@
     <div id="left-container">
     <div id="club-name-box">
         <h1>{{ club }}</h1>
-        <div id="edit-club-name">
-            <button class="edit-name">Edit Name</button>
-        </div>
+
     </div>
     <div id="event-control">
-        <button class="create-event">Create Event</button><br>
+        <a href="{% url 'create_event' %}" class="create-event">Create Event</a><br>
         <div id="upcoming-events2">
             <h2>Events</h2>
             <ul>
