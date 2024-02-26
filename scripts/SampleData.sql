@@ -68,7 +68,7 @@ VALUES ('Intro to Python', 'Learn the basics of Python programming', 1, '2024-03
         'Meet at Main Park Entrance'),
        ('Book Club Meeting', 'Discuss the latest bestseller', 3, '2024-03-15 19:00:00', 'Library Auditorium');
 
-INSERT INTO app_eventrequests (event_id, user_id)
+INSERT INTO app_eventrequests (user_id, event_id)
 VALUES (6, 1),
        (7, 3),
        (3, 2);

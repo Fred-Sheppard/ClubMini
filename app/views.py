@@ -1,13 +1,13 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.shortcuts import render
 from django.urls import reverse
 from django.utils import timezone
-from django.urls import reverse
-from .forms import AccountRequestsForm, LoginForm
-from .models import AccountRequests, Events, Roles, Users, Clubs, ClubRequests, ClubMembers
+
+from .forms import AccountRequestsForm, LoginForm, ClubForm
+from .models import AccountRequests, Events, Roles, Users, Clubs, ClubRequests, ClubMembers, EventMembers, EventRequests
 
 
 def login_view(request):
@@ -163,13 +163,13 @@ def create_club(request):
     return render(request, "create_club.html")
 
 
-
 def register(request):
     roles = Roles.objects.all()
     if request.method == 'POST':
         form = AccountRequestsForm(request.POST)
         if form.is_valid():
-            user = AccountRequests(name=form.cleaned_data['name'], email=form.cleaned_data['email'], role=form.cleaned_data['role'], contact_details=form.cleaned_data['contact_details'])
+            user = AccountRequests(name=form.cleaned_data['name'], email=form.cleaned_data['email'],
+                                   role=form.cleaned_data['role'], contact_details=form.cleaned_data['contact_details'])
             user.set_password(form.cleaned_data['password'])
             user.save()
             return redirect(index)
@@ -179,9 +179,38 @@ def register(request):
     return render(request, 'register.html', {'form': AccountRequestsForm()})
 
 
+@login_required
+def view_event(request, event_id):
+    event = get_object_or_404(Events, event_id=event_id)
+    attendees = [Users.objects.get(user_id=rel.user_id) for rel in EventMembers.objects.filter(event_id=event_id)]
+    n_attendees = len(attendees)
+    user_role_str = str(request.user.role)
+    requests = EventRequests.objects.filter(event_id=event_id).all()
+    if request.user in attendees:
+        message = 'Already applied'
 
-def view_event(request):
-    return render(request, "view_event.html")
+    return render(request, "view_event.html", {'event': event, 'attendees': attendees,
+                                               'n_attendees': n_attendees, 'user_role_str': user_role_str,
+                                               'requests': requests})
+
+
+@login_required
+def join_event(request, event_id, user_id):
+    if not request.user.has_role('Student'):
+        raise PermissionError(f"You don't have permission to access this view\nYour role: {request.user.role}")
+    EventMembers.objects.create(event_id=event_id, user_id=user_id)
+    return redirect(view_event, event_id)
+
+
+@login_required
+def approve_event_request(request, event_id, user_id):
+    if not request.user.has_role('Coordinator'):
+        raise PermissionError(f"You don't have permission to access this view\nYour role: {request.user.role}")
+    EventMembers.objects.create(event_id=event_id, user_id=user_id)
+    print(EventRequests.objects.filter(event_id=event_id, user_id=user_id))
+    EventRequests.objects.filter(event_id=event_id, user_id=user_id).delete()
+    print(EventRequests.objects.filter(event_id=event_id, user_id=user_id))
+    return redirect(view_event, event_id)
 
 
 def club_list(request):
