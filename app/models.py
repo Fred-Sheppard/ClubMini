@@ -18,9 +18,6 @@ class Roles(models.Model):
 class UsersManager(BaseUserManager):
 
     def get_by_natural_key(self, email):
-        """
-        Returns the user with the given natural key (email).
-        """
         return self.get(email=email)
 
 
@@ -80,7 +77,7 @@ class Clubs(models.Model):
     name = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
     accepting_members = models.BooleanField()
-    image = models.URLField(blank=True, null=True) 
+    image = models.URLField(blank=True, null=True)
     date_inserted = models.DateTimeField(auto_now_add=True, null=True)
     date_updated = models.DateTimeField(auto_now=True, null=True)
 
@@ -99,6 +96,9 @@ class ClubMembers(models.Model):
     date_inserted = models.DateTimeField(auto_now_add=True, null=True)
     date_updated = models.DateTimeField(auto_now=True, null=True)
 
+    class Meta:
+        unique_together = (('club', 'user'),)
+
     def __str__(self):
         return f"User: {self.user}, Club: {self.club}"
 
@@ -108,6 +108,9 @@ class ClubRequests(models.Model):
     club = models.ForeignKey(Clubs, on_delete=models.CASCADE)
     date_inserted = models.DateTimeField(auto_now_add=True, null=True)
     date_updated = models.DateTimeField(auto_now=True, null=True)
+
+    class Meta:
+        unique_together = (('club', 'user'),)
 
     def __str__(self):
         return f"User: {self.user}, Club: {self.club}"
@@ -125,7 +128,7 @@ class AccountRequests(models.Model):
 
     def __str__(self):
         return self.email
-    
+
     def set_password(self, raw_password):
         self.password = make_password(raw_password)
 
@@ -145,14 +148,20 @@ class Events(models.Model):
 
 
 class EventRequests(models.Model):
-    event = models.ForeignKey('Events', models.DO_NOTHING)
-    user = models.ForeignKey(Users, models.DO_NOTHING)
+    event = models.ForeignKey('Events', models.CASCADE)
+    user = models.ForeignKey(Users, models.CASCADE)
     date_inserted = models.DateTimeField(auto_now_add=True, null=True)
     date_updated = models.DateTimeField(auto_now=True, null=True)
+
+    class Meta:
+        unique_together = (('event', 'user'),)
 
 
 class EventMembers(models.Model):
-    event = models.ForeignKey('Events', models.DO_NOTHING)
-    user = models.ForeignKey(Users, models.DO_NOTHING)
+    event = models.ForeignKey('Events', models.CASCADE)
+    user = models.ForeignKey(Users, models.CASCADE)
     date_inserted = models.DateTimeField(auto_now_add=True, null=True)
     date_updated = models.DateTimeField(auto_now=True, null=True)
+
+    class Meta:
+        unique_together = (('event', 'user'),)

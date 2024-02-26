@@ -1,23 +1,22 @@
 {% extends 'base.html' %}
 {% block content %}
     <div id="left-container">
-    <div id="club-name-box">
-        <h1>{{ club }}</h1>
-
-    </div>
-    <div id="event-control">
-        <a href="{% url 'create_event' %}" class="create-event">Create Event</a><br>
-        <div id="upcoming-events2">
-            <h2>Events</h2>
-            <ul>
-                {% for event in events %}
-                    <li>
-                        {{ event.title }} - {{ event.event_time }}
-                    </li>
-                {% endfor %}
-            </ul>
+        <div id="club-name-box">
+            <h1>{{ club }}</h1>
         </div>
-    </div>
+        <div id="event-control">
+            <a href="{% url 'create_event' %}" class="create-event">Create Event</a><br>
+            <div id="upcoming-events2">
+                <h2>Events</h2>
+                <ul>
+                    {% for event in events %}
+                        <li>
+                            {{ event.title }} - {{ event.event_time }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
     </div>
     <div id="members-control">
         <div id="requests">
@@ -30,8 +29,8 @@
                             <li>{{ club_request.user.email }}</li>
                             <li>{{ club_request.date_updated }}</li>
                         </ul>
-                        <a href="{% url 'approve_club_request' club_request.id  %}">Approve</a>
-                        <a href="{% url 'deny_club_request' club_request.id  %}">Deny</a>
+                        <a href="{% url 'approve_club_request' club_request.id %}">Approve</a>
+                        <a href="{% url 'deny_club_request' club_request.id %}">Deny</a>
                     </li>
                 {% endfor %}
             </ul>
@@ -51,9 +50,6 @@
                     </li>
                 {% endfor %}
             </ul>
-
         </div>
-
     </div>
-
 {% endblock %}

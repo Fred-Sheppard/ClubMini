@@ -1,44 +1,42 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="header">
-    <div class="center-content">
-        <h1 class="club-heading">{{ club.name }}</h1>
-        <!-- Display the club image -->
-         <!-- Image between "Basketball Club" and "JOIN CLUB" link -->
-        {% if club.image %}
-    <img src="{{ club.image }}" class="image" style="width: 1200px;" alt="Club Image">
-{% else %}
-    <p>No image available</p>
-{% endif %}
+    <div class="header">
+        <div class="center-content">
+            <h1 class="club-heading">{{ club.name }}</h1>
+            <!-- Display the club image -->
+            <!-- Image between "Basketball Club" and "JOIN CLUB" link -->
+            {% if club.image %}
+                <img src="{{ club.image }}" class="image" style="width: 1200px;" alt="Club Image">
+            {% else %}
+                <p>No image available</p>
+            {% endif %}
+        </div>
     </div>
-</div>
-<div style="text-align: center;">
-    <a href="#" class="big-button" title="Start your journey now">JOIN CLUB</a>
-</div>
-<div class="welcome">
-    <h2>Club Description: </h2>
-    <p>
-        <strong>{{ club.name }}: </strong>{{ club.description }}
-    </p>
-</div>
-<div class="club-container">
-    <div class="club-events">
-        <h2>Upcoming Events</h2>
-        <strong>
-        <ul class="event-list">
-            {% for event in club.events.all %}
-            <li>{{ event.name }}</li>
-            {% endfor %}
-        </ul>
-        </strong>
+    <div style="text-align: center;">
+        <a href="#" class="big-button" title="Start your journey now">JOIN CLUB</a>
     </div>
-    <div class="club-description">
-        <h2>Club Members</h2>
-        <ul class="member-list">
-            {% for member in club.members.all %}
-            <li>{{ member.name }}</li>
-            {% endfor %}
-        </ul>
+    <div class="welcome">
+        <h2>Club Description: </h2>
+        <p>
+            <strong>{{ club.name }}: </strong>{{ club.description }}
+        </p>
     </div>
-</div>
+    <div class="club-container">
+        <div class="club-events">
+            <h2>Upcoming Events</h2>
+            <ul class="event-list">
+                {% for event in club.events.all %}
+                    <li><strong>{{ event.name }}</strong></li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="club-description">
+            <h2>Club Members</h2>
+            <ul class="member-list">
+                {% for member in club.members.all %}
+                    <li>{{ member.name }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 {% endblock %}
