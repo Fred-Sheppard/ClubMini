@@ -49,6 +49,20 @@ class Users(AbstractBaseUser):
     def has_role(self, role: str):
         return self.role == Roles.objects.get(name=role)
 
+    @property
+    def dashboard(self):
+        """Returns the dashboard url for the user
+        Returns an empty string if the user has no role"""
+        if self.is_admin():
+            role = 'Admin'
+        else:
+            role = self.role
+        if role is not None:
+            # admin_dashboard, student_dashboard etc
+            return str(role).lower() + '_dashboard'
+        else:
+            return ''
+
     def set_password(self, raw_password):
         self.password = make_password(raw_password)
 
@@ -71,7 +85,10 @@ class Clubs(models.Model):
     image = models.TextField(null=True)
     date_inserted = models.DateTimeField(auto_now_add=True, null=True)
     date_updated = models.DateTimeField(auto_now=True, null=True)
-    members = models.ManyToManyField(Users, related_name='members')
+
+    def members(self):
+        return [Users.objects.get(user_id=relationship.user_id) for relationship in
+                ClubMembers.objects.filter(club_id=self.club_id).all()]
 
     def __str__(self):
         return self.name
@@ -93,6 +110,8 @@ class AccountRequests(models.Model):
     a_request_id = models.AutoField(primary_key=True)
     email = models.CharField(max_length=255, unique=True)
     role = models.ForeignKey(Roles, on_delete=models.CASCADE)  # Set on_delete behavior
+    password = models.CharField(max_length=128)  # Change field type and max_length
+    contact_details = models.CharField(max_length=255, blank=True, null=True)
     date_inserted = models.DateTimeField(auto_now_add=True, null=True)
     date_updated = models.DateTimeField(auto_now=True, null=True)
 
