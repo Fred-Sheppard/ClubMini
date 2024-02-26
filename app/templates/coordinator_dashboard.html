@@ -31,6 +31,7 @@
                             <li>{{ club_request.date_updated }}</li>
                         </ul>
                         <a href="{% url 'approve_club_request' club_request.id  %}">Approve</a>
+                        <a href="{% url 'deny_club_request' club_request.id  %}">Deny</a>
                     </li>
                 {% endfor %}
             </ul>
