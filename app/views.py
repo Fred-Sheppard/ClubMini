@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.utils import timezone
-
+from django.urls import reverse
 from .forms import LoginForm
 from .models import AccountRequests, Events, Users, Clubs, ClubRequests
 
@@ -189,3 +189,41 @@ def signup_request(request):
 
 def view_event(request):
     return render(request, "view_event.html")
+
+
+
+def club_list(request):
+    clubs = Clubs.objects.all()
+    return render(request, 'club_list.html', {'clubs': clubs})
+
+
+
+def club_detail(request, club_id):
+    # Retrieve the club object based on the club_id
+    club = Clubs.objects.get(pk=club_id)
+    context = {'club': club}
+    return render(request, 'club_details.html', context)
+
+from django.shortcuts import redirect
+from .forms import ClubForm
+
+
+def create_club(request):
+    if request.method == 'POST':
+        form = ClubForm(request.POST, request.FILES)
+        if form.is_valid():
+            club = form.save()  # Save the form data
+            if club:
+                try:
+                    # Retrieve the latest club entry from the database
+                    latest_club = Clubs.objects.latest('date_inserted')
+                    return redirect(reverse('club_detail', kwargs={'club_id': latest_club.pk}))
+                except Exception as e:
+                    print("Error redirecting to club detail:", e)
+                    # Handle the error gracefully, e.g., show an error message
+        
+        form = ClubForm()
+    return render(request, 'create_club.html', {'form': ClubForm})
+
+def profile(request):
+    return render(request, "profile.html")

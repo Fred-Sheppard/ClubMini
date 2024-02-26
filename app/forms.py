@@ -1,5 +1,7 @@
 from django import forms
 from django.contrib.auth import authenticate
+from .models import Clubs
+
 
 
 class LoginForm(forms.Form):
@@ -14,3 +16,9 @@ class LoginForm(forms.Form):
         if user is None:
             raise forms.ValidationError('Invalid username or password')
         return cleaned_data
+
+class ClubForm(forms.ModelForm):
+
+    class Meta:
+        model = Clubs
+        fields = ['name', 'description', 'accepting_members', 'image']

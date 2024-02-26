@@ -333,3 +333,18 @@ form label {
 #members h2 {
     margin: 20px;
 }
+
+
+.center-content {
+    text-align: center;
+  }
+  
+  .club-heading {
+    margin-bottom: 20px; /* Add some spacing between the heading and the image */
+  }
+  
+  ul {
+    font-size: 20px;
+    color: white;
+  }
+  
