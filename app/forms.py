@@ -1,7 +1,8 @@
 from django import forms
+from django.contrib.admin.widgets import AdminDateWidget
 from django.contrib.auth import authenticate
-from .models import AccountRequests, Clubs
 
+from .models import AccountRequests, Clubs, Events
 
 
 class LoginForm(forms.Form):
@@ -17,14 +18,24 @@ class LoginForm(forms.Form):
             raise forms.ValidationError('Invalid username or password')
         return cleaned_data
 
-class ClubForm(forms.ModelForm):
 
+class ClubForm(forms.ModelForm):
     class Meta:
         model = Clubs
         fields = ['name', 'description', 'accepting_members', 'image']
-        
+
+
 class AccountRequestsForm(forms.ModelForm):
-    
     class Meta:
         model = AccountRequests
         fields = ['name', 'email', 'role', 'password', 'contact_details']
+
+
+class CreateEventForm(forms.ModelForm):
+    event_time = forms.DateField(widget=AdminDateWidget())
+    class Meta:
+        model = Events
+        fields = ['title', 'description', 'event_time', 'venue']
+        # widgets = {
+        #     'event_time': widgets.AdminDateWidget
+        # }

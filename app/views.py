@@ -6,7 +6,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.utils import timezone
 
-from .forms import AccountRequestsForm, LoginForm, ClubForm
+from .forms import AccountRequestsForm, LoginForm, ClubForm, CreateEventForm
 from .models import AccountRequests, Events, Roles, Users, Clubs, ClubRequests, ClubMembers, EventMembers, EventRequests
 
 
@@ -145,8 +145,23 @@ def deny_club_request(request, club_request_id):
     return redirect('coordinator_dashboard')
 
 
+@login_required
 def create_event(request):
-    return render(request, "create_event.html")
+    if not request.user.has_role('Coordinator'):
+        raise PermissionError(f"You don't have permission to access this view\nYour role: {request.user.role}")
+
+    if request.method == 'GET':
+        return render(request, 'create_event.html', {'form': LoginForm()})
+    form = CreateEventForm(request.POST)
+    if form.is_valid():
+        title = form.cleaned_data['title']
+        description = form.cleaned_data['description']
+        event_time = form.cleaned_data['event_time']
+        venue = form.cleaned_data['venue']
+        Events(club_id=request.user.user_id, title=title, description=description, event_time=event_time,
+               venue=venue).save()
+        return redirect(request.user.dashboard)
+    return render(request, 'create_event.html', {'form': CreateEventForm()})
 
 
 def prompt_club(request):
