@@ -231,5 +231,18 @@ def create_club(request):
     return render(request, 'create_club.html', {'form': ClubForm})
 
 
-def profile(request):
-    return render(request, "profile.html")
+def profile(request, user_id):
+    viewed_user = get_object_or_404(Users, user_id=user_id)
+    if viewed_user.is_admin():
+        message = 'The big boss!'
+    elif viewed_user.has_role('Coordinator'):
+        owned_club = Clubs.objects.filter(club_id=user_id).first()
+        if owned_club is None:
+            message = 'Has yet to establish a club'
+        else:
+            message = f'The owner of the {owned_club}'
+    else:
+        clubs_message = ', '.join([club.name for club in viewed_user.get_clubs()]) if len(
+            viewed_user.get_clubs()) > 0 else 'no clubs'
+        message = f'Member of {clubs_message}'
+    return render(request, "profile.html", {'viewed_user': viewed_user, 'message': message})
