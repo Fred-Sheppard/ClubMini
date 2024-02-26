@@ -72,8 +72,8 @@ def admin_dashboard(request):
 
 def approve_request(request, request_id):
     account_request = AccountRequests.objects.get(pk=request_id)
-    user = Users(email=account_request.email, role=account_request.role, name=account_request.name, contact_details=account_request.contact_details)
-    user.set_password(account_request.password)
+    user = Users(email=account_request.email, role=account_request.role, name=account_request.name, contact_details=account_request.contact_details, password=account_request.password)
+    #user.set_password(account_request.password)
     user.save()
     account_request.delete()
     return redirect('admin_dashboard')
