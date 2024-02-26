@@ -119,6 +119,9 @@ class AccountRequests(models.Model):
 
     def __str__(self):
         return self.email
+    
+    def set_password(self, raw_password):
+        self.password = make_password(raw_password)
 
 
 class Events(models.Model):
