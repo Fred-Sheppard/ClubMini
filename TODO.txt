@@ -1,4 +1,3 @@
-Merge discover and club list
 Write up DML and Triggers
 Rewrite DML to match models
 Allow Admin to register himself (first user)
