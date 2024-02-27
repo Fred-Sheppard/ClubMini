@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.admin.widgets import AdminDateWidget
 from django.contrib.auth import authenticate
 
-from .models import AccountRequests, Clubs, Events
+from .models import AccountRequests, Clubs, Events, Users
 
 
 class LoginForm(forms.Form):
@@ -29,6 +29,11 @@ class AccountRequestsForm(forms.ModelForm):
     class Meta:
         model = AccountRequests
         fields = ['name', 'email', 'role', 'password', 'contact_details']
+        
+class RegisterAdmin(forms.ModelForm):
+    class Meta:
+        model = Users
+        fields = ['name', 'email', 'password', 'contact_details']
 
 
 class CreateEventForm(forms.ModelForm):

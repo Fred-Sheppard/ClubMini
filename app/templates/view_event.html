@@ -4,15 +4,16 @@
         <div class="event-details">
             <h3>Event Details</h3>
             <p>Event Name: {{ event.title }}</p>
+            <p>Club: <a href="{% url 'view_club' event.club_id %}">{{ event.club }}</a></p>
             <p>Date: {{ event.event_time }}</p>
             <p>Description: {{ event.description }}</p>
-            <p>Club: {{ event.venue }}</p>
+            <p>Venue: {{ event.venue }}</p>
             <p>Attending: {{ n_attendees }}</p>
             {% if user_role_str == 'Student' %}
-                {% if not request.user in attendees %}
+                {% if message == '' %}
                     <a href="{% url "join_event" event.event_id request.user.user_id %}">Join Now!</a>
                 {% else %}
-                    <p>Already registered</p>
+                    <p>{{ message }}</p>
                 {% endif %}
             {% endif %}
 

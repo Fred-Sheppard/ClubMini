@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, get_object_or_404
@@ -6,7 +6,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.utils import timezone
 
-from .forms import AccountRequestsForm, LoginForm, ClubForm, CreateEventForm
+from .forms import AccountRequestsForm, LoginForm, ClubForm, CreateEventForm, RegisterAdmin
 from .models import AccountRequests, Events, Roles, Users, Clubs, ClubRequests, ClubMembers, EventMembers, EventRequests
 
 
@@ -27,6 +27,40 @@ def login_view(request):
         return redirect(user.dashboard)
     else:
         return render(request, 'login.html', {'form': LoginForm()})
+    
+def register_admin(request):
+    if Users.objects.count() > 0:
+        return redirect('login')
+    if request.method == 'POST':
+        form = RegisterAdmin(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False) # Saving form data
+            user.set_password(form.cleaned_data['password'])
+            user.role = Roles.objects.get(role_id=1)
+            user.user_id = 1
+            user.save()
+            login(request, user)
+            return redirect('admin_dashboard')
+    form = RegisterAdmin()
+    return render(request, 'register_admin.html', {'form': form})
+
+
+def logout_view(request):
+    logout(request)
+    return render(request, 'index.html')
+
+
+def register(request):
+    if request.method == 'POST':
+        form = AccountRequestsForm(request.POST)
+        if form.is_valid():
+            user = AccountRequests(name=form.cleaned_data['name'], email=form.cleaned_data['email'],
+                                   role=form.cleaned_data['role'], contact_details=form.cleaned_data['contact_details'])
+            user.set_password(form.cleaned_data['password'])
+            user.save()
+            return redirect(index)
+
+    return render(request, 'register.html', {'form': AccountRequestsForm()})
 
 
 @login_required
@@ -64,38 +98,35 @@ def admin_dashboard(request):
 
     account_requests = AccountRequests.objects.all().order_by('-a_request_id')
     users = Users.objects.all().order_by('user_id')
-    return render(request, 'admin_dashboard.html', {'account_requests': account_requests, 'users': users})
+    roles = Roles.objects.all()
+    return render(request, 'admin_dashboard.html', {'account_requests': account_requests, 'users': users, 'roles': roles})
 
 
-
+@login_required
 def approve_request(request, request_id):
+    if not request.user.is_admin():
+        raise PermissionError(f"You don't have permission to access this view\nYour role: {request.user.role}")
     account_request = AccountRequests.objects.get(pk=request_id)
-    user = Users(email=account_request.email, role=account_request.role, name=account_request.name, contact_details=account_request.contact_details, password=account_request.password)
-    #user.set_password(account_request.password)
+    user = Users(email=account_request.email, role=account_request.role, name=account_request.name,
+                 contact_details=account_request.contact_details, password=account_request.password)
+    # user.set_password(account_request.password)
     user.save()
     account_request.delete()
     return redirect('admin_dashboard')
 
 
+@login_required
 def reject_request(request, request_id):
+    if not request.user.is_admin(): 
+        raise PermissionError(f"You don't have permission to access this view\nYour role: {request.user.role}")
     account_request = AccountRequests.objects.get(pk=request_id)
     account_request.delete()
     return redirect('admin_dashboard')
 
 
-@login_required
-def user_list(request):
-    user = request.user
-    if user.is_admin():
-        users = Users.objects.all()
-    elif user.has_role('Coordinator'):
-        users = Clubs.objects.get(club_id=user.user_id).members
-    else:
-        users = [user]
-    return render(request, 'user_list.html', {'users': users})
-
-
 def index(request):
+    if Users.objects.count() == 0:
+        return redirect('register_admin')
     return render(request, "index.html")
 
 
@@ -121,6 +152,8 @@ def approve_club_request(request, club_request_id):
 
 @login_required
 def deny_club_request(request, club_request_id):
+    if not request.user.has_role('Coordinator'):
+        raise PermissionError(f"You don't have permission to access this view\nYour role: {request.user.role}")
     ClubRequests.objects.get(id=club_request_id).delete()
     return redirect('coordinator_dashboard')
 
@@ -143,21 +176,6 @@ def create_event(request):
 
     return render(request, 'create_event.html', {'form': form})
 
-def register(request):
-    roles = Roles.objects.all()
-    if request.method == 'POST':
-        form = AccountRequestsForm(request.POST)
-        if form.is_valid():
-            user = AccountRequests(name=form.cleaned_data['name'], email=form.cleaned_data['email'],
-                                   role=form.cleaned_data['role'], contact_details=form.cleaned_data['contact_details'])
-            user.set_password(form.cleaned_data['password'])
-            user.save()
-            return redirect(index)
-    else:
-        form = AccountRequestsForm()
-
-    return render(request, 'register.html', {'form': AccountRequestsForm()})
-
 
 @login_required
 def view_event(request, event_id):
@@ -168,17 +186,25 @@ def view_event(request, event_id):
     requests = EventRequests.objects.filter(event_id=event_id).all()
     if request.user in attendees:
         message = 'Already applied'
+    elif requests.filter(user_id=request.user.user_id).exists():
+        message = 'Request sent'
+    else:
+        message = ''
 
     return render(request, "view_event.html", {'event': event, 'attendees': attendees,
                                                'n_attendees': n_attendees, 'user_role_str': user_role_str,
-                                               'requests': requests})
+                                               'requests': requests, 'message': message})
 
 
 @login_required
 def join_event(request, event_id, user_id):
     if not request.user.has_role('Student'):
         raise PermissionError(f"You don't have permission to access this view\nYour role: {request.user.role}")
-    EventMembers.objects.create(event_id=event_id, user_id=user_id)
+    club = get_object_or_404(Clubs, club_id=get_object_or_404(Events, event_id=event_id).club_id)
+    if get_object_or_404(Users, user_id=user_id).objects.filter(club_id__in=club).exists():
+        EventMembers.objects.create(event_id=event_id, user_id=user_id)
+    else:
+        EventRequests.objects.create(event_id=event_id, user_id=user_id)
     return redirect(view_event, event_id)
 
 
@@ -191,29 +217,36 @@ def approve_event_request(request, event_id, user_id):
     return redirect(view_event, event_id)
 
 
+@login_required
 def discover(request):
     clubs = Clubs.objects.all()
     return render(request, 'discover.html', {'clubs': clubs})
 
+
+@login_required
 def events_list(request):
     events = Events.objects.all()
     return render(request, 'events_list.html', {'events': events})
 
+
+@login_required
 def create_club(request):
+    if not request.user.has_role('Coordinator'):
+        raise PermissionError(f"You don't have permission to access this view\nYour role: {request.user.role}")
+
     if request.method == 'POST':
         form = ClubForm(request.POST, request.FILES)
         if form.is_valid():
-            club = form.save() # Saving form data
+            club = form.save()  # Saving form data
             club.club_id = request.user.user_id
             if club:
                 try:
                     # Retrieve the latest club entry from the database
                     latest_club = Clubs.objects.latest('date_inserted')
-                    return redirect(reverse('club_detail', kwargs={'club_id': latest_club.pk}))
+                    return redirect(reverse('view_club', kwargs={'club_id': latest_club.pk}))
                 except Exception as e:
                     print("Error redirecting to club detail:", e)
 
-        form = ClubForm()
     return render(request, 'create_club.html', {'form': ClubForm})
 
 
@@ -235,33 +268,35 @@ def profile(request, user_id):
 
 
 @login_required
-def club_detail(request, club_id):
+def view_club(request, club_id):
     coordinator = False
-    if (request.user.has_role('Coordinator')):
+    if request.user.has_role('Coordinator'):
         coordinator = True
     club = get_object_or_404(Clubs, pk=club_id)
-    member = ClubMembers.objects.filter(user=request.user, club=club).exists()
+    is_member = ClubMembers.objects.filter(user=request.user, club=club).exists()
+    print(is_member)
     already_requested = ClubRequests.objects.filter(user=request.user, club=club).exists()
     members = ClubMembers.objects.filter(club=club)
-     
+
     context = {
         'club': club,
-        'member': member,
+        'is_member': is_member,
         'already_requested': already_requested,
-        'members' : members,
-        'coordinator' : coordinator,
-    } 
-            
-    
-    return render(request, 'club_details.html', context)
+        'members': members,
+        'coordinator': coordinator,
+    }
+
+    return render(request, 'view_club.html', context)
+
 
 @login_required
 def join_leave_club(request, club_id):
+    if not request.user.has_role('Student'):
+        raise PermissionError(f"You don't have permission to access this view\nYour role: {request.user.role}")
     club = get_object_or_404(Clubs, pk=club_id)
     user = request.user
     is_member = ClubMembers.objects.filter(user=user, club=club).exists()
     is_requested = ClubRequests.objects.filter(user=user, club=club).exists()
-    print("hi")
     if request.method == 'POST':
         action = request.POST.get('action')
         if action == 'join':
@@ -273,4 +308,4 @@ def join_leave_club(request, club_id):
             elif is_requested:
                 ClubRequests.objects.filter(user=user, club=club).delete()
 
-    return redirect('club_detail', club_id=club_id)
+    return redirect('view_club', club_id=club_id)
