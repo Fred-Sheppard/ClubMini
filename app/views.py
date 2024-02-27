@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, get_object_or_404
@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.utils import timezone
 
 from .forms import AccountRequestsForm, LoginForm, ClubForm, CreateEventForm
-from .models import AccountRequests, Events, Roles, Users, Clubs, ClubRequests, ClubMembers, EventMembers, EventRequests
+from .models import AccountRequests, Events, Users, Clubs, ClubRequests, ClubMembers, EventMembers, EventRequests
 
 
 def login_view(request):
@@ -27,6 +27,24 @@ def login_view(request):
         return redirect(user.dashboard)
     else:
         return render(request, 'login.html', {'form': LoginForm()})
+
+
+def logout_view(request):
+    logout(request)
+    return render(request, 'index.html')
+
+
+def register(request):
+    if request.method == 'POST':
+        form = AccountRequestsForm(request.POST)
+        if form.is_valid():
+            user = AccountRequests(name=form.cleaned_data['name'], email=form.cleaned_data['email'],
+                                   role=form.cleaned_data['role'], contact_details=form.cleaned_data['contact_details'])
+            user.set_password(form.cleaned_data['password'])
+            user.save()
+            return redirect(index)
+
+    return render(request, 'register.html', {'form': AccountRequestsForm()})
 
 
 @login_required
@@ -67,7 +85,10 @@ def admin_dashboard(request):
     return render(request, 'admin_dashboard.html', {'account_requests': account_requests, 'users': users})
 
 
+@login_required
 def approve_request(request, request_id):
+    if not request.user.is_admin():
+        raise PermissionError(f"You don't have permission to access this view\nYour role: {request.user.role}")
     account_request = AccountRequests.objects.get(pk=request_id)
     user = Users(email=account_request.email, role=account_request.role, name=account_request.name,
                  contact_details=account_request.contact_details, password=account_request.password)
@@ -77,7 +98,10 @@ def approve_request(request, request_id):
     return redirect('admin_dashboard')
 
 
+@login_required
 def reject_request(request, request_id):
+    if not request.user.is_admin():
+        raise PermissionError(f"You don't have permission to access this view\nYour role: {request.user.role}")
     account_request = AccountRequests.objects.get(pk=request_id)
     account_request.delete()
     return redirect('admin_dashboard')
@@ -109,6 +133,8 @@ def approve_club_request(request, club_request_id):
 
 @login_required
 def deny_club_request(request, club_request_id):
+    if not request.user.has_role('Coordinator'):
+        raise PermissionError(f"You don't have permission to access this view\nYour role: {request.user.role}")
     ClubRequests.objects.get(id=club_request_id).delete()
     return redirect('coordinator_dashboard')
 
@@ -130,22 +156,6 @@ def create_event(request):
         form = CreateEventForm(request.user)
 
     return render(request, 'create_event.html', {'form': form})
-
-
-def register(request):
-    roles = Roles.objects.all()
-    if request.method == 'POST':
-        form = AccountRequestsForm(request.POST)
-        if form.is_valid():
-            user = AccountRequests(name=form.cleaned_data['name'], email=form.cleaned_data['email'],
-                                   role=form.cleaned_data['role'], contact_details=form.cleaned_data['contact_details'])
-            user.set_password(form.cleaned_data['password'])
-            user.save()
-            return redirect(index)
-    else:
-        form = AccountRequestsForm()
-
-    return render(request, 'register.html', {'form': AccountRequestsForm()})
 
 
 @login_required
@@ -188,17 +198,23 @@ def approve_event_request(request, event_id, user_id):
     return redirect(view_event, event_id)
 
 
+@login_required
 def discover(request):
     clubs = Clubs.objects.all()
     return render(request, 'discover.html', {'clubs': clubs})
 
 
+@login_required
 def events_list(request):
     events = Events.objects.all()
     return render(request, 'events_list.html', {'events': events})
 
 
+@login_required
 def create_club(request):
+    if not request.user.has_role('Coordinator'):
+        raise PermissionError(f"You don't have permission to access this view\nYour role: {request.user.role}")
+
     if request.method == 'POST':
         form = ClubForm(request.POST, request.FILES)
         if form.is_valid():
@@ -212,7 +228,6 @@ def create_club(request):
                 except Exception as e:
                     print("Error redirecting to club detail:", e)
 
-        form = ClubForm()
     return render(request, 'create_club.html', {'form': ClubForm})
 
 
@@ -257,11 +272,12 @@ def view_club(request, club_id):
 
 @login_required
 def join_leave_club(request, club_id):
+    if not request.user.has_role('Student'):
+        raise PermissionError(f"You don't have permission to access this view\nYour role: {request.user.role}")
     club = get_object_or_404(Clubs, pk=club_id)
     user = request.user
     is_member = ClubMembers.objects.filter(user=user, club=club).exists()
     is_requested = ClubRequests.objects.filter(user=user, club=club).exists()
-    print("hi")
     if request.method == 'POST':
         action = request.POST.get('action')
         if action == 'join':

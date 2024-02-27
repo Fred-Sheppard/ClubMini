@@ -5,6 +5,7 @@ from . import views
 urlpatterns = [
     path("", views.index, name="index"),
     path("login/", views.login_view, name='login'),
+    path("logout/", views.logout_view, name='logout'),
     path("accounts/login/", views.login_view, name='login'),
     path("register/", views.register, name='register'),
     path('approve/<int:request_id>/', views.approve_request, name='approve_request'),
@@ -26,6 +27,6 @@ urlpatterns = [
     path("approve_event_request/<int:event_id>/<int:user_id>", views.approve_event_request,
          name='approve_event_request'),
     path('club/<int:club_id>/', views.join_leave_club, name='join_leave_club'),
-     path('club/<int:club_id>/join_leave/', views.join_leave_club, name='join_leave_club'),
-     path('events_list/', views.events_list, name='events_list'),
+    path('club/<int:club_id>/join_leave/', views.join_leave_club, name='join_leave_club'),
+    path('events_list/', views.events_list, name='events_list'),
 ]
