@@ -336,10 +336,8 @@ form label {
     margin: 20px;
 }
 
-
 .center-content {
-    text-align: center;
-}
+    text-align: center;}
 
 .club-heading {
     margin-bottom: 20px; /* Add some spacing between the heading and the image */
@@ -350,3 +348,20 @@ ul {
     color: white;
 }
   
+.large-button {
+    background-color: rgb(14, 177, 14);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    transition-duration: 0.4s;
+}
+
+.large-button:hover {
+    background-color: darkgreen;
+}

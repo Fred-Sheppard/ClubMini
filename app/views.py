@@ -215,14 +215,6 @@ def club_list(request):
     clubs = Clubs.objects.all()
     return render(request, 'club_list.html', {'clubs': clubs})
 
-
-def club_detail(request, club_id):
-    # Retrieve the club object based on the club_id
-    club = Clubs.objects.get(pk=club_id)
-    context = {'club': club}
-    return render(request, 'club_details.html', context)
-
-
 def create_club(request):
     if request.method == 'POST':
         form = ClubForm(request.POST, request.FILES)
@@ -256,3 +248,45 @@ def profile(request, user_id):
             viewed_user.get_clubs()) > 0 else 'no clubs'
         message = f'Member of {clubs_message}'
     return render(request, "profile.html", {'viewed_user': viewed_user, 'message': message})
+
+
+@login_required
+def club_detail(request, club_id):
+    coordinator = False
+    if (request.user.has_role('Coordinator')):
+        coordinator = True
+    club = get_object_or_404(Clubs, pk=club_id)
+    member = ClubMembers.objects.filter(user=request.user, club=club).exists()
+    already_requested = ClubRequests.objects.filter(user=request.user, club=club).exists()
+    members = ClubMembers.objects.filter(club=club)
+     
+    context = {
+        'club': club,
+        'member': member,
+        'already_requested': already_requested,
+        'members' : members,
+        'coordinator' : coordinator,
+    } 
+            
+    
+    return render(request, 'club_details.html', context)
+
+@login_required
+def join_leave_club(request, club_id):
+    club = get_object_or_404(Clubs, pk=club_id)
+    user = request.user
+    is_member = ClubMembers.objects.filter(user=user, club=club).exists()
+    is_requested = ClubRequests.objects.filter(user=user, club=club).exists()
+    print("hi")
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        if action == 'join':
+            if not is_member and not is_requested:
+                ClubRequests.objects.create(user=user, club=club)
+        elif action == 'leave':
+            if is_member:
+                ClubMembers.objects.filter(user=user, club=club).delete()
+            elif is_requested:
+                ClubRequests.objects.filter(user=user, club=club).delete()
+
+    return redirect('club_detail', club_id=club_id)
