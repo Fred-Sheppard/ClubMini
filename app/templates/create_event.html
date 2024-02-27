@@ -1,20 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Create Event</title>
-        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-    </head>
-    <body>
     <h1> Enter Event Details</h1>
     <form method="POST">
         {{ form.as_p }}
         {% csrf_token %}
         <button type="submit">Create Event</button>
     </form>
-    </body>
-    </html>
 {% endblock %}

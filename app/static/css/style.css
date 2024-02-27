@@ -141,11 +141,11 @@ h3 {
 }
 
 footer {
-  padding: 40px 0;
-  color: white;
-  background: #171717;
-  height:90px;
-  clear: both;
+    padding: 40px 0;
+    color: white;
+    background: #171717;
+    height: 90px;
+    clear: both;
 
 }
 
@@ -262,11 +262,13 @@ form label {
     background: #790f0f;
     color: white;
 }
+
 #upcoming-events2 h2 {
     margin: 0;
 }
-#left-container{
-    float:left;
+
+#left-container {
+    float: left;
     display: flex;
     flex-direction: column;
     height: fit-content;
@@ -337,14 +339,14 @@ form label {
 
 .center-content {
     text-align: center;
-  }
-  
-  .club-heading {
+}
+
+.club-heading {
     margin-bottom: 20px; /* Add some spacing between the heading and the image */
-  }
-  
-  ul {
+}
+
+ul {
     font-size: 20px;
     color: white;
-  }
+}
   

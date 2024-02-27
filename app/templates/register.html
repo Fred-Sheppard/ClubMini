@@ -9,13 +9,13 @@
         <link rel="stylesheet" type="text/css" href="{% static 'app/css/styles.css' %}">
     </head>
     <body>
-        <h1>Register</h1>
+    <h1>Register</h1>
 
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Save</button>
-        </form>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
     </body>
     </html>
 {% endblock %}

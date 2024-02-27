@@ -16,23 +16,23 @@
                 </ul>
             {% endfor %}
         </div>
-    <div id="blank"></div>
-    <div id="blank"></div>
+        <div id="blank"></div>
+        <div id="blank"></div>
         <div id="upcoming-events">
-        <h3>Upcoming Events</h3>
-        {% for event in events %}
-            <ul>
-                <li>
-                    <ul>
-                        <li>{{ event.title }}</li>
-                        <li>{{ event.club }}</li>
-                        <li>{{ event.description }}</li>
-                        <li>{{ event.event_time }}</li>
-                    </ul>
-                </li>
-            </ul>
-        {% endfor %}
-    </div>
+            <h3>Upcoming Events</h3>
+            {% for event in events %}
+                <ul>
+                    <li>
+                        <ul>
+                            <li>{{ event.title }}</li>
+                            <li>{{ event.club }}</li>
+                            <li>{{ event.description }}</li>
+                            <li>{{ event.event_time }}</li>
+                        </ul>
+                    </li>
+                </ul>
+            {% endfor %}
+        </div>
 
     </div>
 {% endblock %}

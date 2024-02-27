@@ -33,6 +33,7 @@ class AccountRequestsForm(forms.ModelForm):
 
 class CreateEventForm(forms.ModelForm):
     event_time = forms.DateField(widget=AdminDateWidget())
+
     class Meta:
         model = Events
         fields = ['title', 'description', 'event_time', 'venue']

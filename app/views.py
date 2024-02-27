@@ -164,10 +164,6 @@ def create_event(request):
     return render(request, 'create_event.html', {'form': CreateEventForm()})
 
 
-def prompt_club(request):
-    return render(request, "prompt_club.html")
-
-
 def register(request):
     roles = Roles.objects.all()
     if request.method == 'POST':
