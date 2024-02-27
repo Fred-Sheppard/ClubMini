@@ -218,7 +218,7 @@ def approve_event_request(request, event_id, user_id):
 
 
 @login_required
-def discover(request):
+def clubs_list(request):
     clubs = Clubs.objects.all()
     return render(request, 'discover.html', {'clubs': clubs})
 
