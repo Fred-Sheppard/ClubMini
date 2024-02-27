@@ -38,7 +38,7 @@
                 {% else %}
                     <p>No image available</p>
                 {% endif %}
-                <p><a href="{% url 'club_detail' club.club_id %}" class="club-title">{{ club.name }}</a></p>
+                <p><a href="{% url 'view_club' club.club_id %}" class="club-title">{{ club.name }}</a></p>
                 <p>{{ club.description }}</p>
             </div>
         {% endfor %}

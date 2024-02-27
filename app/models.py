@@ -86,6 +86,10 @@ class Clubs(models.Model):
         return [Users.objects.get(user_id=relationship.user_id) for relationship in
                 ClubMembers.objects.filter(club_id=self.club_id).all()]
 
+    @property
+    def owner(self):
+        return Users.objects.get(user_id=self.club_id)
+
     def __str__(self):
         return self.name
 

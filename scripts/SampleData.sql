@@ -63,10 +63,10 @@ VALUES (7, 2),
        (8, 1);
 
 INSERT INTO app_events (title, description, club_id, event_time, venue)
-VALUES ('Intro to Python', 'Learn the basics of Python programming', 1, '2024-03-02 18:00:00', 'Room 201'),
-       ('Photo Walk in the Park', 'Capture the beauty of nature', 2, '2024-03-10 10:00:00',
+VALUES ('Intro to Python', 'Learn the basics of Python programming', 2, '2024-03-02 18:00:00', 'Room 201'),
+       ('Photo Walk in the Park', 'Capture the beauty of nature', 4, '2024-03-10 10:00:00',
         'Meet at Main Park Entrance'),
-       ('Book Club Meeting', 'Discuss the latest bestseller', 3, '2024-03-15 19:00:00', 'Library Auditorium');
+       ('Book Club Meeting', 'Discuss the latest bestseller', 8, '2024-03-15 19:00:00', 'Library Auditorium');
 
 INSERT INTO app_eventrequests (user_id, event_id)
 VALUES (6, 1),
