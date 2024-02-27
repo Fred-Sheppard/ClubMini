@@ -7,7 +7,7 @@
         <ul>
             {% for account_request in account_requests %}
                 <li>
-                    <p>{{ account_request.email }} - {{ account_request.date_inserted }}</p>
+                    <p>{{ account_request.email }} - {{ account_request.date_inserted }} - {{ user.role }}</p>
                     <a href="{% url 'approve_request' account_request.a_request_id %}">Approve</a>
                     <a href="{% url 'reject_request' account_request.a_request_id %}">Reject</a>
                 </li>

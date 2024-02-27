@@ -48,10 +48,10 @@ VALUES ('Jeremy', 'new_coordinator@example.com', 1,
         '+14443332222');
 
 INSERT
-INTO app_clubs (club_id, name, description, accepting_members)
+INTO app_clubs (club_id, name, description, accepting_members, image)
 VALUES (2, 'Coding Club', 'Learn and share your coding skills', TRUE),
        (4, 'Photography Club', 'Capture the world through your lens', FALSE),
-       (8, 'Book Club', 'Discuss and analyze your favorite books', TRUE);
+       (8, 'Weightlifting Club', 'Train and compete in SBD and Olympic Lifts', TRUE, https://www.garage-gyms.com/wp-content/uploads/2014/11/dmitry-klokov-barbell.jpg);
 
 INSERT INTO app_clubmembers (user_id, club_id)
 VALUES (3, 2),

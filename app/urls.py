@@ -27,6 +27,7 @@ urlpatterns = [
     path("approve_event_request/<int:event_id>/<int:user_id>", views.approve_event_request,
          name='approve_event_request'),
     path('club/<int:club_id>/', views.join_leave_club, name='join_leave_club'),
-    path('club/<int:club_id>/join_leave/', views.join_leave_club, name='join_leave_club'),
-    path('events_list/', views.events_list, name='events_list'),
+     path('club/<int:club_id>/join_leave/', views.join_leave_club, name='join_leave_club'),
+     path('events_list/', views.events_list, name='events_list'),
+     path('register_admin/', views.register_admin, name='register_admin'),
 ]

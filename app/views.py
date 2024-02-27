@@ -6,8 +6,8 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.utils import timezone
 
-from .forms import AccountRequestsForm, LoginForm, ClubForm, CreateEventForm
-from .models import AccountRequests, Events, Users, Clubs, ClubRequests, ClubMembers, EventMembers, EventRequests
+from .forms import AccountRequestsForm, LoginForm, ClubForm, CreateEventForm, RegisterAdmin
+from .models import AccountRequests, Events, Roles, Users, Clubs, ClubRequests, ClubMembers, EventMembers, EventRequests
 
 
 def login_view(request):
@@ -27,6 +27,22 @@ def login_view(request):
         return redirect(user.dashboard)
     else:
         return render(request, 'login.html', {'form': LoginForm()})
+    
+def register_admin(request):
+    if Users.objects.count() > 0:
+        return redirect('login')
+    if request.method == 'POST':
+        form = RegisterAdmin(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False) # Saving form data
+            user.set_password(form.cleaned_data['password'])
+            user.role = Roles.objects.get(role_id=1)
+            user.user_id = 1
+            user.save()
+            login(request, user)
+            return redirect('admin_dashboard')
+    form = RegisterAdmin()
+    return render(request, 'register_admin.html', {'form': form})
 
 
 def logout_view(request):
@@ -82,7 +98,8 @@ def admin_dashboard(request):
 
     account_requests = AccountRequests.objects.all().order_by('-a_request_id')
     users = Users.objects.all().order_by('user_id')
-    return render(request, 'admin_dashboard.html', {'account_requests': account_requests, 'users': users})
+    roles = Roles.objects.all()
+    return render(request, 'admin_dashboard.html', {'account_requests': account_requests, 'users': users, 'roles': roles})
 
 
 @login_required
@@ -100,7 +117,7 @@ def approve_request(request, request_id):
 
 @login_required
 def reject_request(request, request_id):
-    if not request.user.is_admin():
+    if not request.user.is_admin(): 
         raise PermissionError(f"You don't have permission to access this view\nYour role: {request.user.role}")
     account_request = AccountRequests.objects.get(pk=request_id)
     account_request.delete()
@@ -108,6 +125,8 @@ def reject_request(request, request_id):
 
 
 def index(request):
+    if Users.objects.count() == 0:
+        return redirect('register_admin')
     return render(request, "index.html")
 
 
