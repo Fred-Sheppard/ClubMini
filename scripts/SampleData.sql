@@ -48,10 +48,10 @@ VALUES ('Jeremy', 'new_coordinator@example.com', 1,
         '+14443332222');
 
 INSERT
-INTO app_clubs (club_id, name, description, accepting_members)
-VALUES (2, 'Coding Club', 'Learn and share your coding skills', TRUE),
-       (4, 'Photography Club', 'Capture the world through your lens', FALSE),
-       (8, 'Book Club', 'Discuss and analyze your favorite books', TRUE);
+INTO app_clubs (club_id, name, description, image, accepting_members)
+VALUES (2, 'Coding Club', 'Welcome to our Coding Club, where creativity meets technology! Whether youre a beginner or an experienced coder our inclusive community fosters collaboration and learning.','https://cdn-wordpress-info.futurelearn.com/wp-content/uploads/Coding_Blog_Header_1500x750.jpg.optimal.jpg',TRUE),
+       (4, 'Photography Club', 'Step into the captivating world of photography with our club! Discover the artistry behind the lens as we explore techniques, styles, and visual storytelling together.','https://petapixel.com/assets/uploads/2022/05/photographers-with-cameras-800x420.jpg' ,FALSE),
+       (8, 'Book Club', 'Welcome to our Book Club, where pages come alive with discussion and discovery! Dive into captivating stories, explore diverse genres, and share your literary insights in a welcoming environment.','https://www.thegoodbook.co.uk/downloads/bookclub.jpg', TRUE);
 
 INSERT INTO app_clubmembers (user_id, club_id)
 VALUES (3, 2),
