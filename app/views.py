@@ -99,26 +99,6 @@ def index(request):
     return render(request, "index.html")
 
 
-def discover(request):
-    clubs = Clubs.objects.all()
-    if request.user.has_role('Student'):
-        lt_3_clubs = len(request.user.get_clubs()) < 3
-        messages = {}
-        for club in clubs:
-            if club in request.user.get_clubs():
-                messages[club] = 'Already a member'
-            elif len(ClubRequests.objects.filter(user_id=request.user.user_id)) >= 1:
-                messages[club] = 'Already applied'
-            elif not lt_3_clubs:
-                messages[club] = 'Can only join 3 clubs'
-            else:
-                # An empty message will be replaced by a link to apply for that club
-                messages[club] = ''
-    else:
-        messages = {}
-    return render(request, "discover.html", {'messages': messages})
-
-
 @login_required()
 def apply_for_club(request, club_id):
     if not request.user.has_role('Student'):
@@ -211,9 +191,9 @@ def approve_event_request(request, event_id, user_id):
     return redirect(view_event, event_id)
 
 
-def club_list(request):
+def discover(request):
     clubs = Clubs.objects.all()
-    return render(request, 'club_list.html', {'clubs': clubs})
+    return render(request, 'discover.html', {'clubs': clubs})
 
 def events_list(request):
     events = Events.objects.all()

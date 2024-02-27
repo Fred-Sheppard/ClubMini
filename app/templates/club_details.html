@@ -30,14 +30,14 @@
     </div>
 
     <div class="welcome" style="margin-top: 200px;">
-        <h2>Club Description: </h2> 
+        <h3>Club Description: </h3> 
         <p>
             <strong>{{ club.name }}: </strong>{{ club.description }}
         </p>
     </div>
     <div class="club-container">
         <div class="club-description">
-            <h2>Club Members</h2>
+            <h3>Club Members</h3>
         <ul class="member-list">
             {% for member in members %}
                 {% with user=member.user %}
