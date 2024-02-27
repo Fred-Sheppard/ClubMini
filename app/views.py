@@ -215,6 +215,10 @@ def club_list(request):
     clubs = Clubs.objects.all()
     return render(request, 'club_list.html', {'clubs': clubs})
 
+def events_list(request):
+    events = Events.objects.all()
+    return render(request, 'events_list.html', {'events': events})
+
 def create_club(request):
     if request.method == 'POST':
         form = ClubForm(request.POST, request.FILES)
