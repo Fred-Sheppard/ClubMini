@@ -249,7 +249,7 @@ def create_club(request):
 
     return render(request, 'create_club.html', {'form': ClubForm})
 
-
+@login_required
 def profile(request, user_id):
     viewed_user = get_object_or_404(Users, user_id=user_id)
     if viewed_user.is_admin():

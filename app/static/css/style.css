@@ -365,3 +365,66 @@ ul {
 .large-button:hover {
     background-color: darkgreen;
 }
+.profile-form {
+    /* Center the form horizontally */
+    margin: 0 auto;
+    width: 50%; /* Adjust width as needed */
+
+    /* Add some padding and margin */
+    padding: 20px;
+    margin-top: 20px;
+
+}
+
+/* Add styles for form elements inside profile-form */
+.profile-form input[type="text"],
+.profile-form input[type="email"],
+.profile-form textarea,
+.profile-form select {
+    /* Make input fields take up full width */
+    width: 100%;
+
+    /* Add some padding and margin */
+    padding: 10px;
+    margin-bottom: 10px;
+
+    /* Add border and border-radius */
+    border: 1px solid #ccc;
+    border-radius: 3px;
+
+    /* Set font size and line height */
+    font-size: 16px;
+    line-height: 1.5;
+
+    /* Remove default browser styles */
+    outline: none;
+}
+
+/* Add styles for submit button */
+.profile-form input[type="submit"] {
+    /* Set background color and text color */
+    background-color: #007bff;
+    color: #fff;
+
+    /* Add padding and margin */
+    padding: 10px 20px;
+    margin-top: 10px;
+
+    /* Add border and border-radius */
+    border: none;
+    border-radius: 3px;
+
+    /* Set cursor to pointer on hover */
+    cursor: pointer;
+
+    /* Remove default browser styles */
+    outline: none;
+
+    /* Add hover effect */
+    transition: background-color 0.3s ease;
+}
+
+.profile-form input[type="submit"]:hover {
+    /* Change background color on hover */
+    background-color: #0056b3;
+}
