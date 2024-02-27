@@ -52,7 +52,7 @@ def coordinator_dashboard(request):
         club_requests = ClubRequests.objects.filter(club__name=club.__str__())
         members = club.members
     except IndexError:
-        return render(request, 'create_club.html')
+        return redirect('create_club')
     return render(request, 'coordinator_dashboard.html',
                   {'club': club, 'events': events, 'club_requests': club_requests, 'members': members})
 
@@ -150,19 +150,18 @@ def create_event(request):
     if not request.user.has_role('Coordinator'):
         raise PermissionError(f"You don't have permission to access this view\nYour role: {request.user.role}")
 
-    if request.method == 'GET':
-        return render(request, 'create_event.html', {'form': LoginForm()})
-    form = CreateEventForm(request.POST)
-    if form.is_valid():
-        title = form.cleaned_data['title']
-        description = form.cleaned_data['description']
-        event_time = form.cleaned_data['event_time']
-        venue = form.cleaned_data['venue']
-        Events(club_id=request.user.user_id, title=title, description=description, event_time=event_time,
-               venue=venue).save()
-        return redirect(request.user.dashboard)
-    return render(request, 'create_event.html', {'form': CreateEventForm()})
+    if request.method == 'POST':
+        form = CreateEventForm(request.user, request.POST)
+        if form.is_valid():
+            event = form.save(commit=False)
+            event.club = Clubs.objects.get(club_id=request.user.user_id)
+            event.save()
+            return redirect(reverse('view_event', kwargs={'event_id': event.pk}))
 
+    else:
+        form = CreateEventForm(request.user)
+
+    return render(request, 'create_event.html', {'form': form})
 
 def register(request):
     roles = Roles.objects.all()
@@ -228,7 +227,8 @@ def create_club(request):
     if request.method == 'POST':
         form = ClubForm(request.POST, request.FILES)
         if form.is_valid():
-            club = form.save()  # Save the form data
+            club = form.save() # Saving form data
+            club.club_id = request.user.user_id
             if club:
                 try:
                     # Retrieve the latest club entry from the database
@@ -236,7 +236,6 @@ def create_club(request):
                     return redirect(reverse('club_detail', kwargs={'club_id': latest_club.pk}))
                 except Exception as e:
                     print("Error redirecting to club detail:", e)
-                    # Handle the error gracefully, e.g., show an error message
 
         form = ClubForm()
     return render(request, 'create_club.html', {'form': ClubForm})

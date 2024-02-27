@@ -32,7 +32,7 @@ class AccountRequestsForm(forms.ModelForm):
 
 
 class CreateEventForm(forms.ModelForm):
-    event_time = forms.DateField(widget=AdminDateWidget())
+    #event_time = forms.DateField(widget=AdminDateWidget())
 
     class Meta:
         model = Events
@@ -40,3 +40,14 @@ class CreateEventForm(forms.ModelForm):
         # widgets = {
         #     'event_time': widgets.AdminDateWidget
         # }
+        
+    def save(self, commit=True):
+        event = super().save(commit=False)
+        event.club = Clubs.objects.get(club_id=self.user.user_id)
+        if commit:
+            event.save()
+        return event
+    
+    def __init__(self, user, *args, **kwargs):
+        super(CreateEventForm, self).__init__(*args, **kwargs)
+        self.user = user
