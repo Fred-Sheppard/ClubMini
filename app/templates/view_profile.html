@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="center-content">
+        <h1>{{ viewed_user.name }}'s Profile</h1>
+    </div>
+    <ul>
+        <li>Name: {{ viewed_user.name }}</li>
+        <li>Email: {{ viewed_user.email }}</li>
+        <li>Contact details: {{ viewed_user.contact_details }}</li>
+    </ul>
+    <p>{{ message }}</p>
+{% endblock %}
+
+
+
+
+

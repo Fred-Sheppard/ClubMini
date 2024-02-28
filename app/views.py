@@ -26,28 +26,30 @@ def login_view(request):
             return HttpResponseRedirect(next_url)
         return redirect(user.dashboard)
     else:
-        return render(request, 'login.html', {'form': LoginForm()})
-    
+        return render(request, 'login.html', {'form': form})
+
+
 def register_admin(request):
     if Users.objects.count() > 0:
         return redirect('login')
     if request.method == 'POST':
         form = RegisterAdmin(request.POST)
         if form.is_valid():
-            user = form.save(commit=False) # Saving form data
+            user = form.save(commit=False)  # Saving form data
             user.set_password(form.cleaned_data['password'])
             user.role = Roles.objects.get(role_id=1)
             user.user_id = 1
             user.save()
             login(request, user)
             return redirect('admin_dashboard')
-    form = RegisterAdmin()
+    else:
+        form = RegisterAdmin()
     return render(request, 'register_admin.html', {'form': form})
 
 
 def logout_view(request):
     logout(request)
-    return render(request, 'index.html')
+    return redirect("/")
 
 
 def register(request):
@@ -58,9 +60,10 @@ def register(request):
                                    role=form.cleaned_data['role'], contact_details=form.cleaned_data['contact_details'])
             user.set_password(form.cleaned_data['password'])
             user.save()
-            return redirect(index)
-
-    return render(request, 'register.html', {'form': AccountRequestsForm()})
+            return redirect(have_registered)
+    else:
+        form = AccountRequestsForm()
+    return render(request, 'register.html', {'form': form})
 
 
 @login_required
@@ -70,8 +73,8 @@ def student_dashboard(request):
 
     today = timezone.now()
 
-    events = Events.objects.filter(club__in=request.user.get_clubs()).filter(event_time__gt=today) \
-                 .order_by('event_time')[:3]
+    events = Events.objects.filter(club__in=request.user.get_clubs()).filter(event_time__gt=today).order_by(
+        'event_time')[:3]
     return render(request, 'student_dashboard.html', {'events': events, 'clubs': request.user.get_clubs()})
 
 
@@ -99,7 +102,8 @@ def admin_dashboard(request):
     account_requests = AccountRequests.objects.all().order_by('-a_request_id')
     users = Users.objects.all().order_by('user_id')
     roles = Roles.objects.all()
-    return render(request, 'admin_dashboard.html', {'account_requests': account_requests, 'users': users, 'roles': roles})
+    return render(request, 'admin_dashboard.html',
+                  {'account_requests': account_requests, 'users': users, 'roles': roles})
 
 
 @login_required
@@ -117,7 +121,7 @@ def approve_request(request, request_id):
 
 @login_required
 def reject_request(request, request_id):
-    if not request.user.is_admin(): 
+    if not request.user.is_admin():
         raise PermissionError(f"You don't have permission to access this view\nYour role: {request.user.role}")
     account_request = AccountRequests.objects.get(pk=request_id)
     account_request.delete()
@@ -170,7 +174,6 @@ def create_event(request):
             event.club = Clubs.objects.get(club_id=request.user.user_id)
             event.save()
             return redirect(reverse('view_event', kwargs={'event_id': event.pk}))
-
     else:
         form = CreateEventForm(request.user)
 
@@ -182,7 +185,7 @@ def view_event(request, event_id):
     event = get_object_or_404(Events, event_id=event_id)
     attendees = [Users.objects.get(user_id=rel.user_id) for rel in EventMembers.objects.filter(event_id=event_id)]
     n_attendees = len(attendees)
-    user_role_str = str(request.user.role)
+    user_role_str = str(request.user.role) if not request.user.is_admin() else 'Admin'
     requests = EventRequests.objects.filter(event_id=event_id).all()
     if request.user in attendees:
         message = 'Already applied'
@@ -237,8 +240,9 @@ def create_club(request):
     if request.method == 'POST':
         form = ClubForm(request.POST, request.FILES)
         if form.is_valid():
-            club = form.save()  # Saving form data
+            club = form.save(commit=False)  # Saving form data
             club.club_id = request.user.user_id
+            form.save()
             if club:
                 try:
                     # Retrieve the latest club entry from the database
@@ -246,12 +250,29 @@ def create_club(request):
                     return redirect(reverse('view_club', kwargs={'club_id': latest_club.pk}))
                 except Exception as e:
                     print("Error redirecting to club detail:", e)
+    else:
+        form = ClubForm()
+    return render(request, 'create_club.html', {'form': form})
 
-    return render(request, 'create_club.html', {'form': ClubForm})
 
 @login_required
 def profile(request, user_id):
     viewed_user = get_object_or_404(Users, user_id=user_id)
+    allowed_to_view = False
+    if request.user.user_id == user_id:
+        allowed_to_view = True
+    elif request.user.is_admin():
+        allowed_to_view = True
+    elif request.user.has_role('Coordinator'):
+        # If the user is in the coordinator's club
+        try:
+            coord_club = Clubs.objects.get(club_id=request.user.user_id)
+            allowed_to_view = ClubMembers.objects.filter(user=viewed_user, club=coord_club).exists()
+        except Clubs.DoesNotExist:
+            pass
+    if not allowed_to_view:
+        raise PermissionError(f"You don't have permission to access this view\nYour role: {request.user.role}")
+
     if viewed_user.is_admin():
         message = 'The big boss!'
     elif viewed_user.has_role('Coordinator'):
@@ -264,7 +285,10 @@ def profile(request, user_id):
         clubs_message = ', '.join([club.name for club in viewed_user.get_clubs()]) if len(
             viewed_user.get_clubs()) > 0 else 'no clubs'
         message = f'Member of {clubs_message}'
-    return render(request, "profile.html", {'viewed_user': viewed_user, 'message': message})
+    if viewed_user == request.user:
+        return render(request, "profile.html", {'viewed_user': viewed_user, 'message': message})
+    else:
+        return render(request, "view_profile.html", {'viewed_user': viewed_user, 'message': message})
 
 
 @login_required
@@ -274,17 +298,14 @@ def view_club(request, club_id):
         coordinator = True
     club = get_object_or_404(Clubs, pk=club_id)
     is_member = ClubMembers.objects.filter(user=request.user, club=club).exists()
-    print(is_member)
     already_requested = ClubRequests.objects.filter(user=request.user, club=club).exists()
     members = ClubMembers.objects.filter(club=club)
     user_memberships = ClubMembers.objects.filter(user=request.user)
     num_clubs_joined = user_memberships.count()
-    print(num_clubs_joined)
-    if  num_clubs_joined < 3:
+    if num_clubs_joined < 3:
         can_join_more_clubs = False
     else:
         can_join_more_clubs = True
-        
 
     context = {
         'club': club,
@@ -293,7 +314,7 @@ def view_club(request, club_id):
         'members': members,
         'coordinator': coordinator,
         'can_join_more_clubs': can_join_more_clubs,
-        'num_clubs_joined' : num_clubs_joined,
+        'num_clubs_joined': num_clubs_joined,
     }
 
     return render(request, 'view_club.html', context)
@@ -319,3 +340,7 @@ def join_leave_club(request, club_id):
                 ClubRequests.objects.filter(user=user, club=club).delete()
 
     return redirect('view_club', club_id=club_id)
+
+
+def have_registered(request):
+    return render(request, 'have_registered.html')

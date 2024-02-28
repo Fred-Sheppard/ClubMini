@@ -44,7 +44,7 @@ class Users(AbstractBaseUser):
         return self.user_id == 1
 
     def has_role(self, role: str):
-        return self.role == Roles.objects.get(name=role)
+        return self.role == Roles.objects.get(name=role) and not self.is_admin()
 
     @property
     def dashboard(self):
