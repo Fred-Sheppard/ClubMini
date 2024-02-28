@@ -337,7 +337,8 @@ form label {
 }
 
 .center-content {
-    text-align: center;}
+    text-align: center;
+}
 
 .club-heading {
     margin-bottom: 20px; /* Add some spacing between the heading and the image */
@@ -347,7 +348,7 @@ ul {
     font-size: 20px;
     color: white;
 }
-  
+
 .large-button {
     background-color: rgb(14, 177, 14);
     color: white;
@@ -365,14 +366,14 @@ ul {
 .large-button:hover {
     background-color: darkgreen;
 }
+
 .profile-form {
     /* Center the form horizontally */
-    margin: 0 auto;
     width: 50%; /* Adjust width as needed */
 
     /* Add some padding and margin */
     padding: 20px;
-    margin-top: 20px;
+    margin: 20px auto 0;
 
 }
 
