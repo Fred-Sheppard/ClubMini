@@ -30,4 +30,5 @@ urlpatterns = [
     path('club/<int:club_id>/join_leave/', views.join_leave_club, name='join_leave_club'),
     path('events_list/', views.events_list, name='events_list'),
     path('register_admin/', views.register_admin, name='register_admin'),
+    path('have_registered/', views.have_registered, name='have_registered'),
 ]

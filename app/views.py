@@ -59,9 +59,10 @@ def register(request):
                                    role=form.cleaned_data['role'], contact_details=form.cleaned_data['contact_details'])
             user.set_password(form.cleaned_data['password'])
             user.save()
-            return redirect(index)
-
-    return render(request, 'register.html', {'form': AccountRequestsForm()})
+            return redirect(have_registered)
+    else:
+        form = AccountRequestsForm()
+    return render(request, 'register.html', {'form': form})
 
 
 @login_required
