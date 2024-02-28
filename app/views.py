@@ -27,14 +27,15 @@ def login_view(request):
         return redirect(user.dashboard)
     else:
         return render(request, 'login.html', {'form': LoginForm()})
-    
+
+
 def register_admin(request):
     if Users.objects.count() > 0:
         return redirect('login')
     if request.method == 'POST':
         form = RegisterAdmin(request.POST)
         if form.is_valid():
-            user = form.save(commit=False) # Saving form data
+            user = form.save(commit=False)  # Saving form data
             user.set_password(form.cleaned_data['password'])
             user.role = Roles.objects.get(role_id=1)
             user.user_id = 1
@@ -99,7 +100,8 @@ def admin_dashboard(request):
     account_requests = AccountRequests.objects.all().order_by('-a_request_id')
     users = Users.objects.all().order_by('user_id')
     roles = Roles.objects.all()
-    return render(request, 'admin_dashboard.html', {'account_requests': account_requests, 'users': users, 'roles': roles})
+    return render(request, 'admin_dashboard.html',
+                  {'account_requests': account_requests, 'users': users, 'roles': roles})
 
 
 @login_required
@@ -117,7 +119,7 @@ def approve_request(request, request_id):
 
 @login_required
 def reject_request(request, request_id):
-    if not request.user.is_admin(): 
+    if not request.user.is_admin():
         raise PermissionError(f"You don't have permission to access this view\nYour role: {request.user.role}")
     account_request = AccountRequests.objects.get(pk=request_id)
     account_request.delete()
@@ -249,9 +251,25 @@ def create_club(request):
 
     return render(request, 'create_club.html', {'form': ClubForm})
 
+
 @login_required
-def profile(request, user_id):
+def view_profile(request, user_id):
     viewed_user = get_object_or_404(Users, user_id=user_id)
+    allowed_to_view = False
+    if request.user.user_id == user_id:
+        allowed_to_view = True
+    elif request.user.is_admin():
+        allowed_to_view = True
+    elif request.user.has_role('Coordinator'):
+        # If the user is in the coordinator's club
+        try:
+            coord_club = Clubs.objects.get(club_id=request.user.user_id)
+            allowed_to_view = ClubMembers.objects.filter(user=viewed_user, club=coord_club).exists()
+        except Clubs.DoesNotExist:
+            pass
+    if not allowed_to_view:
+        raise PermissionError(f"You don't have permission to access this view\nYour role: {request.user.role}")
+
     if viewed_user.is_admin():
         message = 'The big boss!'
     elif viewed_user.has_role('Coordinator'):
@@ -264,7 +282,7 @@ def profile(request, user_id):
         clubs_message = ', '.join([club.name for club in viewed_user.get_clubs()]) if len(
             viewed_user.get_clubs()) > 0 else 'no clubs'
         message = f'Member of {clubs_message}'
-    return render(request, "profile.html", {'viewed_user': viewed_user, 'message': message})
+    return render(request, "view-profile.html", {'viewed_user': viewed_user, 'message': message})
 
 
 @login_required
@@ -279,12 +297,10 @@ def view_club(request, club_id):
     members = ClubMembers.objects.filter(club=club)
     user_memberships = ClubMembers.objects.filter(user=request.user)
     num_clubs_joined = user_memberships.count()
-    print(num_clubs_joined)
-    if  num_clubs_joined < 3:
+    if num_clubs_joined < 3:
         can_join_more_clubs = False
     else:
         can_join_more_clubs = True
-        
 
     context = {
         'club': club,
@@ -293,7 +309,7 @@ def view_club(request, club_id):
         'members': members,
         'coordinator': coordinator,
         'can_join_more_clubs': can_join_more_clubs,
-        'num_clubs_joined' : num_clubs_joined,
+        'num_clubs_joined': num_clubs_joined,
     }
 
     return render(request, 'view_club.html', context)

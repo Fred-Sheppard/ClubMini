@@ -49,7 +49,7 @@
             <ul class="member-list">
                 {% for member in members %}
                     {% with user=member.user %}
-                        <li>{{ user.name }}</li>
+                        <p>{{ user.name }} - {{ user.email }}</p>
                     {% endwith %}
                 {% endfor %}
             </ul>

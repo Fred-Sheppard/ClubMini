@@ -2,7 +2,7 @@
 {% block content %}
     <div id="left-container">
         <div id="club-name-box">
-            <h1><a href="{% url 'view_club' club.club_id%}">{{ club.name }}</a></h1>
+            <h1><a href="{% url 'view_club' club.club_id %}">{{ club.name }}</a></h1>
         </div>
         <div id="event-control">
             <a href="{% url 'create_event' %}" class="create-event">Create Event</a><br>
@@ -12,7 +12,7 @@
                     {% for event in events %}
                         <li>
                             {{ event.title }} - {{ event.event_time }} - {{ event.venue }} <br>
-                            {{ event.description}}
+                            {{ event.description }}
 
                         </li>
                     {% endfor %}
@@ -43,7 +43,7 @@
             <ul>
                 {% for member in members %}
                     <li>
-                        {{ member.name }}
+                        <a href="{% url 'view_profile' member.user_id %}">{{ member.name }}</a>
                         <ul>
                             <li>
                                 {{ member.email }}
