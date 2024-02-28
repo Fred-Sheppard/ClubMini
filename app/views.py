@@ -26,7 +26,7 @@ def login_view(request):
             return HttpResponseRedirect(next_url)
         return redirect(user.dashboard)
     else:
-        return render(request, 'login.html', {'form': LoginForm()})
+        return render(request, 'login.html', {'form': form})
 
 
 def register_admin(request):
@@ -42,13 +42,14 @@ def register_admin(request):
             user.save()
             login(request, user)
             return redirect('admin_dashboard')
-    form = RegisterAdmin()
+    else:
+        form = RegisterAdmin()
     return render(request, 'register_admin.html', {'form': form})
 
 
 def logout_view(request):
     logout(request)
-    return render(request, 'index.html')
+    return redirect("/")
 
 
 def register(request):
@@ -173,7 +174,6 @@ def create_event(request):
             event.club = Clubs.objects.get(club_id=request.user.user_id)
             event.save()
             return redirect(reverse('view_event', kwargs={'event_id': event.pk}))
-
     else:
         form = CreateEventForm(request.user)
 
@@ -240,8 +240,9 @@ def create_club(request):
     if request.method == 'POST':
         form = ClubForm(request.POST, request.FILES)
         if form.is_valid():
-            club = form.save()  # Saving form data
+            club = form.save(commit=False)  # Saving form data
             club.club_id = request.user.user_id
+            form.save()
             if club:
                 try:
                     # Retrieve the latest club entry from the database
@@ -249,8 +250,9 @@ def create_club(request):
                     return redirect(reverse('view_club', kwargs={'club_id': latest_club.pk}))
                 except Exception as e:
                     print("Error redirecting to club detail:", e)
-
-    return render(request, 'create_club.html', {'form': ClubForm})
+    else:
+        form = ClubForm()
+    return render(request, 'create_club.html', {'form': form})
 
 
 @login_required
@@ -338,3 +340,7 @@ def join_leave_club(request, club_id):
                 ClubRequests.objects.filter(user=user, club=club).delete()
 
     return redirect('view_club', club_id=club_id)
+
+
+def have_registered(request):
+    return render(request, 'have_registered.html')
