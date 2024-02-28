@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="header">
+        <div class="center-content">
+            <h1 class="club-heading">Create a New Club</h1>
+        </div>
+    </div>
+
+    <div class="club-container">
+        <div class="club-description">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Save</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

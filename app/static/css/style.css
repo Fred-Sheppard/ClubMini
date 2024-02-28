@@ -1,21 +1,450 @@
-header{
-    color: white;
-    font-size: 25px;
+header {
+    color: White;
+    height: 90px;
+    font-size: 35px;
     text-align: right;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-family: Overpass, Geneva, Tahoma, sans-serif;
     background-size: 120px;
     word-spacing: 20px;
     padding-right: 10px;
-    background: cornflowerblue scroll;
+    background: #171717 scroll;
+}
+
+#nav-bar-left {
+    float: left;
+    text-align: center;
+}
+
+#nav-bar-right {
+    float: right;
+    padding-top: 10px;
+}
+
+#header-option {
+    margin: 10px;
+    height: 55px;
+    width: 140px;
+    float: left;
+    text-align: center;
+}
+
+#header-option:hover {
+    /*color: white;*/
+    background: #156bfd;
+    box-shadow: 0 0 2px 3px white;
+}
+
+.background-colour {
+    background: #212121;
+    width: 100%;
+    height: 100%;
+}
+
+.background-image {
+    width: 100%;
+    height: 100%;
+    background-image: url('https://hea.ie/assets/uploads/2017/04/UL-1000x500.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
 
 }
-footer{
-    padding: 40px 0;
-    color: white;
-    background: cornflowerblue;
-    height: auto;
+
+#title-box {
+
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 20px;
+    border-radius: 10px;
+    color: #ffffff;
 }
 
 h1 {
-    color: yellow;
+    font-size: 50px;
+    text-align: center;
+    font-family: impact, sans-serif;
+    color: white;
+
+}
+
+h2 {
+    font-size: 120px;
+    text-align: center;
+    font-family: impact, sans-serif;
+    color: #ffffff;
+
+}
+
+h3 {
+    font-size: 65px;
+    text-align: left;
+    color: #ffffff;
+
+}
+
+/*Buttons{      */
+#Login-button {
+    background-color: red;
+    height: 80px;
+    width: 250px;
+    text-align: center;
+    margin: 20px auto 30px;
+    line-height: 80px;
+
+    font-size: 35px;
+    border-radius: 11px;
+    color: white;
+}
+
+#Login-button:hover {
+    box-shadow: 0 0 2px 3px yellow;
+}
+
+
+.big-button {
+    font-size: 24px;
+    padding: 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 80%; /* Adjust the width as needed */
+    margin: 230px;
+}
+
+.edit-name {
+    border: 1px solid black;
+    height: 30px;
+    width: 120px;
+    background: rgba(154, 39, 39, 0.88);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+
+
+}
+
+.create-event {
+    background: #790f0f;
+    height: 80px;
+    width: 320px;
+    text-align: center;
+    margin: 80px;
+    float: left;
+    padding-top: 20px;
+    border-radius: 15px;
+
+    font-size: 40px;
+    color: white;
+    align-items: center;
+    justify-content: center;
+}
+
+footer {
+    padding: 40px 0;
+    color: white;
+    background: #171717;
+    height: 90px;
+    clear: both;
+
+}
+
+p {
+    font-size: 20px;
+    color: white;
+
+}
+
+a {
+    font-family: Helvetica, sans-serif;
+    color: white;
+}
+
+#your-clubs {
+    padding: 5px;
+    height: fit-content;
+
+    background: #790f0f;
+    color: white;
+}
+
+#your-clubs.h3 {
+    border-bottom: black 1px;
+
+}
+
+#upcoming-events {
+    padding: 5px;
+    height: fit-content;
+
+    background: #790f0f;
+    color: white;
+}
+
+#dashboard-layout {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+#blank {
+    height: 200px;
+    background: #212121;
+}
+
+
+form label {
+    font-size: 20px;
+    color: white;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.event-details {
+    grid-column: 1;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.requests {
+    float: right;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.requests ul {
+    list-style: none;
+    padding: 0;
+}
+
+.requests li {
+    margin-bottom: 10px;
+}
+
+.requests li span {
+    color: white;
+}
+
+#club-name-box {
+    background: #790f0f;
+    margin-left: 5px;
+    height: 100px;
+    width: max-content;
+    padding-top: 20px;
+    padding-left: 30px;
+    padding-right: 30px;
+
+    float: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+
+    border: 2px solid black;
+    border-radius: 5px;
+}
+
+#upcoming-events2 {
+    height: fit-content;
+    width: fit-content;
+    padding: 20px 90px;
+    float: left;
+    margin-left: 50px;
+    margin-bottom: 20px;
+
+
+    background: #790f0f;
+    color: white;
+}
+
+#upcoming-events2 h2 {
+    margin: 0;
+}
+
+#left-container {
+    float: left;
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    padding: 10px;
+
+
+}
+
+#requests {
+    color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+
+}
+
+#requests ul {
+    font-size: 20px;
+    font-family: Helvetica, sans-serif;
+    color: white;
+    list-style: none;
+    padding: 0;
+    margin: 0 auto; /* Center the list horizontally */
+    max-width: 400px; /* Optional: Adjust the max-width as needed */
+}
+
+#requests li {
+    text-align: left;
+}
+
+#requests h2 {
+    margin: 20px;
+}
+
+#members-control {
+    color: white;
+    display: flex;
+    flex-direction: column;
+
+}
+
+#members {
+    color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+
+}
+
+#members ul {
+    font-size: 20px;
+    font-family: Helvetica, sans-serif;
+    color: white;
+    list-style: inside;
+    padding: 0;
+    margin: 0 auto; /* Center the list horizontally */
+    max-width: 400px; /* Optional: Adjust the max-width as needed */
+}
+
+#members li {
+    text-align: left;
+}
+
+#members h2 {
+    margin: 20px;
+}
+
+.center-content {
+    text-align: center;}
+
+.club-heading {
+    margin-bottom: 20px; /* Add some spacing between the heading and the image */
+}
+
+ul {
+    font-size: 20px;
+    color: white;
+}
+  
+.large-button {
+    background-color: rgb(14, 177, 14);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    transition-duration: 0.4s;
+}
+
+.large-button:hover {
+    background-color: darkgreen;
+}
+.profile-form {
+    /* Center the form horizontally */
+    margin: 0 auto;
+    width: 50%; /* Adjust width as needed */
+
+    /* Add some padding and margin */
+    padding: 20px;
+    margin-top: 20px;
+
+}
+
+/* Add styles for form elements inside profile-form */
+.profile-form input[type="text"],
+.profile-form input[type="email"],
+.profile-form textarea,
+.profile-form select {
+    /* Make input fields take up full width */
+    width: 100%;
+
+    /* Add some padding and margin */
+    padding: 10px;
+    margin-bottom: 10px;
+
+    /* Add border and border-radius */
+    border: 1px solid #ccc;
+    border-radius: 3px;
+
+    /* Set font size and line height */
+    font-size: 16px;
+    line-height: 1.5;
+
+    /* Remove default browser styles */
+    outline: none;
+}
+
+/* Add styles for submit button */
+.profile-form input[type="submit"] {
+    /* Set background color and text color */
+    background-color: #007bff;
+    color: #fff;
+
+    /* Add padding and margin */
+    padding: 10px 20px;
+    margin-top: 10px;
+
+    /* Add border and border-radius */
+    border: none;
+    border-radius: 3px;
+
+    /* Set cursor to pointer on hover */
+    cursor: pointer;
+
+    /* Remove default browser styles */
+    outline: none;
+
+    /* Add hover effect */
+    transition: background-color 0.3s ease;
+}
+
+.profile-form input[type="submit"]:hover {
+    /* Change background color on hover */
+    background-color: #0056b3;
+}
+
+.club-box {
+    width: 300px;
+    height: 450px;
+    border: 1px solid #ccc;
+    margin: 10px;
+    padding: 10px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.club-image {
+    width: 100%;
+    height: 200px; /* Fixed height for all images */
+    object-fit: cover; /* Preserve aspect ratio and fill container */
+}
+
+.club-title {
+    font-weight: bold;
 }

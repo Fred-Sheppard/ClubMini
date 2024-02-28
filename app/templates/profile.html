@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="center-content">
+        <h1>{{ viewed_user.name }}'s Profile</h1>
+        <p>Email: {{ viewed_user.email }}</p>
+    </div>
+   
+    <!-- Form for updating name and contact details -->
+    <form method="post" class="profile-form">
+        {% csrf_token %}
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name" value="{{ viewed_user.name }}"><br>
+       
+        <label for="contact">Contact:</label><br>
+        <input type="text" id="contact" name="contact" value="{{ viewed_user.contact_details }}"><br>
+       
+        <input type="submit" value="Update">
+    </form>
+
+
+    <p>{{ message }}</p>
+{% endblock %}
+
+
+
+
+

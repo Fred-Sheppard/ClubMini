@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<head>
+    <meta charset="UTF-8">
+    <title>ClubHub</title>
+    <link rel="icon" type="image/x-icon" href={% static 'images/favicon.ico' %}>
+</head>
+<header>
+    <div id="nav-bar-left">
+        <div id="header-option">{{ user.name }}</div>
+    </div>
+    <div id="nav-bar-right">
+        <div id="header-option"><a href="/{{ user.dashboard }}">Home</a></div>
+        <div id="header-option"><a href="{% url 'discover' %}">Discover</a></div>
+        <div id="header-option"><a href="{% url 'events_list' %}">Events</a></div>
+        <div id="header-option"><a href="{% url 'login' %}">Login</a></div>
+        {% if user.is_authenticated %}
+            <div id="header-option"><a href="{% url 'profile' user_id=user.pk %}">Profile</a></div>
+        {% endif %}
+
+    </div>
+</header>
+<body class="background-colour">
+<div class="background-colour">
+    {% block content %}
+    {% endblock %}
+</div>
+</body>
+<footer>
+    <p>Find out more: 23383372@studentmail.ul.ie</p>
+    <a href="{% url 'logout' %}">Logout</a>
+</footer>
+</html>

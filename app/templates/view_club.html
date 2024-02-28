@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="header">
+        <div class="center-content">
+            <h1 class="club-heading">{{ club.name }}</h1>
+            <!-- Display the club image -->
+            {% if club.image %}
+                <img src="{{ club.image }}" class="image" style="width: 1200px;" alt="Club Image">
+            {% else %}
+                <p>No image available</p>
+            {% endif %}
+        </div>
+        <div style="text-align: center;">
+            <form action="{% url 'join_leave_club' club_id=club.pk %}" method="post">
+                {% csrf_token %}
+                {% if not coordinator %}
+                    {% if not is_member %}
+                        {% if not already_requested %}
+                            {% if  can_join_more_clubs %}
+                                <button type="submit" name="action" value="join" style="width: 500px; height: 50px;"
+                                        class="large-button">Join Club
+                                </button>
+                            {% else %}
+                                <p>You have reached the maximum limit of club memberships allowed.</p>
+                            {% endif %}
+                        {% else %}
+                            <p>Request already sent. Please wait for approval.</p>
+                        {% endif %}
+                    {% else %}
+                        <button type="submit" name="action" value="leave" style="width: 500px; height: 50px;"
+                                class="large-button">Leave Club
+                        </button>
+                    {% endif %}
+                {% endif %}
+            </form>
+        </div>
+    </div>
+    <div class="welcome" style="margin-top: 200px;">
+        <h3>Owner:</h3>
+        <p>{{ club.owner }} - {{ club.owner.email }}</p>
+        <h3>Club Description: </h3>
+        <p>
+            <strong>{{ club.name }}: </strong>{{ club.description }}
+        </p>
+    </div>
+    <div class="club-container">
+        <div class="club-description">
+            <h3>Club Members</h3>
+            <ul class="member-list">
+                {% for member in members %}
+                    {% with user=member.user %}
+                        <p>{{ user.name }} - {{ user.email }}</p>
+                    {% endwith %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Your Dashboard</h1>
+    <div id="dashboard-layout">
+        <div id="your-clubs">
+            <h3>{{ user }}'s Clubs</h3>
+            {% for club in clubs %}
+                <ul>
+                    <li>
+                        <ul>
+                            <li>{{ club.name }}</li>
+                            <li>{{ club.description }}</li>
+                            <li>Open: {{ club.accepting_members }}</li>
+                        </ul>
+                    </li>
+                </ul>
+            {% endfor %}
+        </div>
+        <div id="blank"></div>
+        <div id="blank"></div>
+        <div id="upcoming-events">
+            <h3>Upcoming Events</h3>
+            {% for event in events %}
+                <ul>
+                    <li>
+                        <ul>
+                            <li>{{ event.title }}</li>
+                            <li>{{ event.club }}</li>
+                            <li>{{ event.description }}</li>
+                            <li>{{ event.event_time }}</li>
+                        </ul>
+                    </li>
+                </ul>
+            {% endfor %}
+        </div>
+
+    </div>
+{% endblock %}
