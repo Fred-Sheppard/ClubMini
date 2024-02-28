@@ -43,7 +43,7 @@
             <ul>
                 {% for member in members %}
                     <li>
-                        <a href="{% url 'view_profile' member.user_id %}">{{ member.name }}</a>
+                        <a href="{% url 'profile' member.user_id %}">{{ member.name }}</a>
                         <ul>
                             <li>
                                 {{ member.email }}

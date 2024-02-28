@@ -71,8 +71,8 @@ def student_dashboard(request):
 
     today = timezone.now()
 
-    events = Events.objects.filter(club__in=request.user.get_clubs()).filter(event_time__gt=today) \
-                 .order_by('event_time')[:3]
+    events = Events.objects.filter(club__in=request.user.get_clubs()).filter(event_time__gt=today).order_by(
+        'event_time')[:3]
     return render(request, 'student_dashboard.html', {'events': events, 'clubs': request.user.get_clubs()})
 
 
@@ -184,7 +184,7 @@ def view_event(request, event_id):
     event = get_object_or_404(Events, event_id=event_id)
     attendees = [Users.objects.get(user_id=rel.user_id) for rel in EventMembers.objects.filter(event_id=event_id)]
     n_attendees = len(attendees)
-    user_role_str = str(request.user.role)
+    user_role_str = str(request.user.role) if not request.user.is_admin() else 'Admin'
     requests = EventRequests.objects.filter(event_id=event_id).all()
     if request.user in attendees:
         message = 'Already applied'
@@ -253,7 +253,7 @@ def create_club(request):
 
 
 @login_required
-def view_profile(request, user_id):
+def profile(request, user_id):
     viewed_user = get_object_or_404(Users, user_id=user_id)
     allowed_to_view = False
     if request.user.user_id == user_id:
@@ -282,7 +282,10 @@ def view_profile(request, user_id):
         clubs_message = ', '.join([club.name for club in viewed_user.get_clubs()]) if len(
             viewed_user.get_clubs()) > 0 else 'no clubs'
         message = f'Member of {clubs_message}'
-    return render(request, "view-profile.html", {'viewed_user': viewed_user, 'message': message})
+    if viewed_user == request.user:
+        return render(request, "profile.html", {'viewed_user': viewed_user, 'message': message})
+    else:
+        return render(request, "view_profile.html", {'viewed_user': viewed_user, 'message': message})
 
 
 @login_required
@@ -292,7 +295,6 @@ def view_club(request, club_id):
         coordinator = True
     club = get_object_or_404(Clubs, pk=club_id)
     is_member = ClubMembers.objects.filter(user=request.user, club=club).exists()
-    print(is_member)
     already_requested = ClubRequests.objects.filter(user=request.user, club=club).exists()
     members = ClubMembers.objects.filter(club=club)
     user_memberships = ClubMembers.objects.filter(user=request.user)

@@ -13,7 +13,6 @@ urlpatterns = [
     path('admin_dashboard/', views.admin_dashboard, name='admin_dashboard'),
     path("coordinator_dashboard/", views.coordinator_dashboard, name='coordinator_dashboard'),
     path("student_dashboard/", views.student_dashboard, name='student_dashboard'),
-    path("view_profile/<int:user_id>", views.view_profile, name='view_profile'),
     path("discover/", views.clubs_list, name='discover'),
     path("profile/<int:user_id>", views.profile, name='profile'),
     path("club/<int:club_id>/", views.view_club, name='view_club'),
@@ -28,7 +27,7 @@ urlpatterns = [
     path("approve_event_request/<int:event_id>/<int:user_id>", views.approve_event_request,
          name='approve_event_request'),
     path('club/<int:club_id>/', views.join_leave_club, name='join_leave_club'),
-     path('club/<int:club_id>/join_leave/', views.join_leave_club, name='join_leave_club'),
-     path('events_list/', views.events_list, name='events_list'),
-     path('register_admin/', views.register_admin, name='register_admin'),
+    path('club/<int:club_id>/join_leave/', views.join_leave_club, name='join_leave_club'),
+    path('events_list/', views.events_list, name='events_list'),
+    path('register_admin/', views.register_admin, name='register_admin'),
 ]
