@@ -1,7 +1,0 @@
-
-Steps:
-1 clone the repo
-2 if the db.sqlite3 file exists, delete it `rm db.sqlite3`
-3 `python manage.py migrate`
-4 run sampledata.sql (windows users google it, mac/linux: `sqlite3 db.sqlite3 < scripts/SampleData.sql`
-5 `python manage.py runserver`
