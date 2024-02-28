@@ -277,6 +277,14 @@ def view_club(request, club_id):
     print(is_member)
     already_requested = ClubRequests.objects.filter(user=request.user, club=club).exists()
     members = ClubMembers.objects.filter(club=club)
+    user_memberships = ClubMembers.objects.filter(user=request.user)
+    num_clubs_joined = user_memberships.count()
+    print(num_clubs_joined)
+    if  num_clubs_joined < 3:
+        can_join_more_clubs = False
+    else:
+        can_join_more_clubs = True
+        
 
     context = {
         'club': club,
@@ -284,6 +292,8 @@ def view_club(request, club_id):
         'already_requested': already_requested,
         'members': members,
         'coordinator': coordinator,
+        'can_join_more_clubs': can_join_more_clubs,
+        'num_clubs_joined' : num_clubs_joined,
     }
 
     return render(request, 'view_club.html', context)

@@ -16,9 +16,13 @@
                 {% if not coordinator %}
                     {% if not is_member %}
                         {% if not already_requested %}
-                            <button type="submit" name="action" value="join" style="width: 500px; height: 50px;"
-                                    class="large-button">Join Club
-                            </button>
+                            {% if  can_join_more_clubs %}
+                                <button type="submit" name="action" value="join" style="width: 500px; height: 50px;"
+                                        class="large-button">Join Club
+                                </button>
+                            {% else %}
+                                <p>You have reached the maximum limit of club memberships allowed.</p>
+                            {% endif %}
                         {% else %}
                             <p>Request already sent. Please wait for approval.</p>
                         {% endif %}
