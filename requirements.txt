@@ -28,7 +28,7 @@ pep8==1.7.1
 platformdirs==4.2.0
 pluggy==1.4.0
 ply==3.11
-pyarrow==11.0.0
+pyarrow==14.0.1
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 pycparser==2.21
