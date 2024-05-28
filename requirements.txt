@@ -39,7 +39,7 @@ python-lsp-jsonrpc==1.1.0
 python-lsp-server==1.10.0
 queuelib==1.5.0
 six==1.16.0
-sqlparse==0.4.4
+sqlparse==0.5.0
 tbb==2021.11.0
 typing_extensions==4.9.0
 ujson==5.9.0
